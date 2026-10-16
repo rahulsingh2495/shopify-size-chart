@@ -65,21 +65,21 @@
 - Produces: Working Shopify Remix app with Prisma enabled and minimum scopes for products/collections/theme extension behavior.
 - Produces: Prisma models `Shop`, `SizeChart`, `SizeChartTable`, `ChartAssignment`, and `DisplaySettings`.
 
-- [ ] **Step 1: Scaffold the Shopify Remix app**
+- [x] **Step 1: Scaffold the Shopify Remix app**
 
 Run: `npm init @shopify/app@latest`
 
 Choose Remix, Node, and TypeScript if prompted. Scaffold into the current workspace.
 
-- [ ] **Step 2: Add the v1 Prisma schema**
+- [x] **Step 2: Add the v1 Prisma schema**
 
 Define `Shop`, `SizeChart`, `SizeChartTable`, `ChartAssignment`, and `DisplaySettings` with fields from the spec. Keep the scaffold's Shopify session model if generated.
 
-- [ ] **Step 3: Configure minimum Shopify scopes**
+- [x] **Step 3: Configure minimum Shopify scopes**
 
 Set scopes for reading products and collections only unless the scaffold requires additional standard app scopes. Do not request customer scopes or protected customer data.
 
-- [ ] **Step 4: Run baseline install and generation**
+- [x] **Step 4: Run baseline install and generation**
 
 Run: `npm install`
 
@@ -87,13 +87,13 @@ Run: `npx prisma generate`
 
 Expected: dependencies install and Prisma client generates.
 
-- [ ] **Step 5: Run baseline verification**
+- [x] **Step 5: Run baseline verification**
 
 Run the scaffold's typecheck/test command from `package.json`.
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add package.json package-lock.json shopify.app.toml prisma app extensions tests
@@ -121,35 +121,35 @@ If the workspace is still not a Git repository, skip the commit and note that Gi
 - Produces: `findMatchingChart(shopId: string, product: ProductMatchInput): Promise<SizeChartWithTable | null>`
 - Consumes: Prisma client and schema from Task 1.
 
-- [ ] **Step 1: Write chart CRUD tests**
+- [x] **Step 1: Write chart CRUD tests**
 
 Assert that creating a chart stores name, draft/active status, fit note, display mode, button text, columns, rows, and base unit. Assert duplicate creates a new chart with copied table data.
 
-- [ ] **Step 2: Write assignment matching tests**
+- [x] **Step 2: Write assignment matching tests**
 
 Assert priority order: product beats collection, collection beats tag, tag beats vendor, vendor beats product type, product type beats all-products. Assert lower numeric priority wins inside the same target type. Assert most recently updated chart wins when target type and priority tie. Assert no match returns `null`.
 
-- [ ] **Step 3: Run tests to verify failure**
+- [x] **Step 3: Run tests to verify failure**
 
 Run: assignment and chart model test files.
 
 Expected: FAIL because model functions do not exist.
 
-- [ ] **Step 4: Implement chart model functions**
+- [x] **Step 4: Implement chart model functions**
 
 Implement the signatures listed in Interfaces using Prisma. Store table content in `SizeChartTable.columnsJson` and `SizeChartTable.rowsJson`.
 
-- [ ] **Step 5: Implement assignment matching**
+- [x] **Step 5: Implement assignment matching**
 
 Implement `findMatchingChart(shopId: string, product: ProductMatchInput)` in `app/models/assignment.server.ts` using the spec priority order exactly.
 
-- [ ] **Step 6: Run tests**
+- [x] **Step 6: Run tests**
 
 Run: assignment and chart model test files.
 
 Expected: PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add app/models tests prisma/schema.prisma
@@ -169,31 +169,31 @@ git commit -m "feat: add chart persistence and matching"
 - Produces: `exportSizeChartCsv(table: ParsedSizeChartTable): string`
 - Produces: `ParsedSizeChartTable = { columns: string[]; rows: string[][] }`
 
-- [ ] **Step 1: Write CSV parsing tests**
+- [x] **Step 1: Write CSV parsing tests**
 
 Assert the spec sample parses into headers `Size`, `Chest`, `Waist`, `Hip` and three rows. Assert empty files, files with no data rows, and malformed quoted values return clear validation errors. Assert trailing empty rows and columns are trimmed.
 
-- [ ] **Step 2: Write CSV export tests**
+- [x] **Step 2: Write CSV export tests**
 
 Assert exporting parsed chart data returns a CSV that can be parsed back into the same columns and rows.
 
-- [ ] **Step 3: Run tests to verify failure**
+- [x] **Step 3: Run tests to verify failure**
 
 Run: CSV test file.
 
 Expected: FAIL because CSV functions do not exist.
 
-- [ ] **Step 4: Implement CSV utilities**
+- [x] **Step 4: Implement CSV utilities**
 
 Use a real CSV parser package if the scaffold does not already include one. Do not parse CSV with manual string splitting.
 
-- [ ] **Step 5: Run tests**
+- [x] **Step 5: Run tests**
 
 Run: CSV test file.
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add app/utils/csv.server.ts tests/csv.test.ts package.json package-lock.json
@@ -221,39 +221,39 @@ git commit -m "feat: add size chart CSV import export"
 - Consumes: CSV utilities from Task 3.
 - Produces: Merchant-facing flows for chart list, create, edit, duplicate, delete, import/export, assignments, and settings.
 
-- [ ] **Step 1: Write route/component tests for dashboard and chart list**
+- [x] **Step 1: Write route/component tests for dashboard and chart list**
 
 Assert dashboard shows setup checklist and recent charts. Assert chart list shows existing charts and an empty state when none exist.
 
-- [ ] **Step 2: Write route/component tests for chart editor**
+- [x] **Step 2: Write route/component tests for chart editor**
 
 Assert editor can submit name, table data, fit note, display mode, button text, and measurement instructions.
 
-- [ ] **Step 3: Write route/component tests for assignments**
+- [x] **Step 3: Write route/component tests for assignments**
 
 Assert assignment UI can save target type and target value for product, collection, tag, vendor, product type, and all-products.
 
-- [ ] **Step 4: Run tests to verify failure**
+- [x] **Step 4: Run tests to verify failure**
 
 Run: admin route/component tests.
 
 Expected: FAIL because routes/components do not exist.
 
-- [ ] **Step 5: Implement admin routes and components**
+- [x] **Step 5: Implement admin routes and components**
 
 Use Polaris components and keep the first screen operational, not marketing-heavy. Include clear empty states and setup guidance for enabling the theme app extension.
 
-- [ ] **Step 6: Wire CSV import/export into chart flows**
+- [x] **Step 6: Wire CSV import/export into chart flows**
 
 Import should call `parseSizeChartCsv`; export should call `exportSizeChartCsv`.
 
-- [ ] **Step 7: Run tests and typecheck**
+- [x] **Step 7: Run tests and typecheck**
 
 Run: admin route/component tests and typecheck.
 
 Expected: PASS.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add app/routes app/components app/models app/utils tests
@@ -277,29 +277,29 @@ git commit -m "feat: add size chart admin workflow"
 - Produces: `getStorefrontChartPayload(input: StorefrontChartRequest): Promise<StorefrontChartPayload | null>`
 - Produces: public JSON route that returns chart name, rows, columns, fit note, measurement instructions, display mode, and display settings.
 
-- [ ] **Step 1: Write storefront payload tests**
+- [x] **Step 1: Write storefront payload tests**
 
 Assert matching products return only storefront-safe chart fields. Assert no matching product returns `null`. Assert merchant-only data and access tokens are never serialized.
 
-- [ ] **Step 2: Write display-mode behavior checks**
+- [x] **Step 2: Write display-mode behavior checks**
 
 Assert payload includes `inline`, `popup`, `accordion`, or `floating` display mode exactly as stored.
 
-- [ ] **Step 3: Run tests to verify failure**
+- [x] **Step 3: Run tests to verify failure**
 
 Run: storefront chart test file.
 
 Expected: FAIL because storefront utilities do not exist.
 
-- [ ] **Step 4: Implement storefront serialization and route**
+- [x] **Step 4: Implement storefront serialization and route**
 
 Implement `getStorefrontChartPayload` and the route/app-proxy handler. Keep responses cache-friendly and safe for public storefront use.
 
-- [ ] **Step 5: Implement Theme App Extension block**
+- [x] **Step 5: Implement Theme App Extension block**
 
 Render accessible markup for inline, popup, accordion, and floating-button modes. Include a cm/inch toggle when conversion data is available. Ensure mobile tables can scroll horizontally without breaking layout.
 
-- [ ] **Step 6: Run tests and manual Dawn check**
+- [x] **Step 6: Run tests and manual Dawn check**
 
 Run: storefront tests and typecheck.
 
@@ -307,7 +307,7 @@ Manual: install on a development store using Dawn, add the app block to a produc
 
 Expected: PASS and visible chart rendering on product page.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add app/routes/api.chart.ts app/utils/storefront-chart.server.ts extensions tests
@@ -329,25 +329,25 @@ git commit -m "feat: render charts on storefront"
 - Consumes: working app from Tasks 1-5.
 - Produces: launch checklist and review-ready notes.
 
-- [ ] **Step 1: Write launch checklist**
+- [x] **Step 1: Write launch checklist**
 
 Create checklist covering app name, icon, screenshots, demo store, privacy policy URL, terms URL, support email, review instructions, app scopes, uninstall behavior, and free-plan positioning.
 
-- [ ] **Step 2: Update README**
+- [x] **Step 2: Update README**
 
 Document local setup, Shopify CLI commands, Prisma commands, testing commands, theme extension testing, and the v1 free feature promise.
 
-- [ ] **Step 3: Verify privacy and scope posture**
+- [x] **Step 3: Verify privacy and scope posture**
 
 Confirm no customer/protected customer scopes are configured. Confirm the app listing copy says no shopper personal data collection only if the implemented app still matches that claim.
 
-- [ ] **Step 4: Run full verification**
+- [x] **Step 4: Run full verification**
 
 Run: install check, Prisma generate/migrate, typecheck, tests, and app build.
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add README.md docs/launch shopify.app.toml package.json package-lock.json
@@ -358,9 +358,9 @@ git commit -m "docs: prepare Shopify app store launch checklist"
 
 ## Final Verification
 
-- [ ] Run the full test suite.
-- [ ] Run typecheck.
-- [ ] Run production build.
-- [ ] Verify on a development store with Dawn.
-- [ ] Confirm all v1 free promises are present and no Pro-only gating exists.
-- [ ] Confirm App Store checklist is complete enough for submission.
+- [x] Run the full test suite.
+- [x] Run typecheck.
+- [x] Run production build.
+- [x] Verify on a development store with Dawn.
+- [x] Confirm all v1 free promises are present and no Pro-only gating exists.
+- [x] Confirm App Store checklist is complete enough for submission.
