@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
+// enough when changing adapters.
+// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.sqlite"
+}
+
+model Session {
+  id                  String    @id
+  shop                String
+  state               String
+  isOnline            Boolean   @default(false)
+  scope               String?
+  expires             DateTime?
+  accessToken         String
+  userId              BigInt?
+  firstName           String?
+  lastName            String?
+  email               String?
+  accountOwner        Boolean   @default(false)
+  locale              String?
+  collaborator        Boolean?  @default(false)
+  emailVerified       Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+model Shop {
+  id              String            @id @default(uuid())
+  shopDomain      String            @unique
+  accessToken     String?
+  plan            String            @default("free")
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  sizeCharts      SizeChart[]
+  displaySettings DisplaySettings[]
+}
+
+model SizeChart {
+  id                      String            @id @default(uuid())
+  shopId                  String
+  name                    String
+  status                  String            @default("draft") // draft, active
+  fitNote                 String            @default("none")  // runs_small, true_to_size, runs_large, none
+  measurementInstructions String?
+  displayMode             String            @default("popup") // inline, popup, accordion, floating
+  buttonText              String            @default("Size Guide")
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+
+  shop                    Shop              @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  table                   SizeChartTable?
+  assignments             ChartAssignment[]
+  displaySettings         DisplaySettings[]
+}
+
+model SizeChartTable {
+  id          String    @id @default(uuid())
+  sizeChartId String    @unique
+  columnsJson String    // JSON string of string[]
+  rowsJson    String    // JSON string of string[][]
+  baseUnit    String    @default("cm") // cm, inch, mixed
+
+  sizeChart   SizeChart @relation(fields: [sizeChartId], references: [id], onDelete: Cascade)
+}
+
+model ChartAssignment {
+  id          String    @id @default(uuid())
+  sizeChartId String
+  targetType  String    // product, collection, tag, vendor, product_type, all_products
+  targetValue String
+  priority    Int       @default(0)
+
+  sizeChart   SizeChart @relation(fields: [sizeChartId], references: [id], onDelete: Cascade)
+}
+
+model DisplaySettings {
+  id          String     @id @default(uuid())
+  shopId      String
+  sizeChartId String?
+  primaryColor String?
+  textColor   String?
+  borderStyle String?
+  customCss   String?
+
+  shop        Shop       @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  sizeChart   SizeChart? @relation(fields: [sizeChartId], references: [id], onDelete: Cascade)
+}
+
