@@ -1,0 +1,49 @@
+{% comment %}
+  Size Chart App Block - Free Shopify Size Chart App by Pixelotech
+{% endcomment %}
+
+<div
+  class="px-size-chart-container"
+  data-px-size-chart
+  data-shop="{{ shop.permanent_domain }}"
+  data-product-id="{{ product.id }}"
+  data-product-handle="{{ product.handle }}"
+  data-vendor="{{ product.vendor | escape }}"
+  data-product-type="{{ product.type | escape }}"
+  data-tags="{{ product.tags | join: ',' | escape }}"
+  data-collections="{% for c in product.collections %}{{ c.id }}{% unless forloop.last %},{% endunless %}{% endfor %}"
+  data-override-button="{{ block.settings.button_text | escape }}"
+  data-override-display="{{ block.settings.display_mode_override }}"
+>
+  <!-- Content dynamically mounted by size-chart.js -->
+</div>
+
+{% schema %}
+{
+  "name": "Size Chart",
+  "target": "section",
+  "stylesheet": "size-chart.css",
+  "javascript": "size-chart.js",
+  "settings": [
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Label Override",
+      "info": "Leave blank to use the label configured in the app."
+    },
+    {
+      "type": "select",
+      "id": "display_mode_override",
+      "label": "Display Mode Override",
+      "options": [
+        { "value": "default", "label": "Use App Settings" },
+        { "value": "popup", "label": "Popup Modal" },
+        { "value": "inline", "label": "Inline" },
+        { "value": "accordion", "label": "Accordion" },
+        { "value": "floating", "label": "Floating Button" }
+      ],
+      "default": "default"
+    }
+  ]
+}
+{% endschema %}

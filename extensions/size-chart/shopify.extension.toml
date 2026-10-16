@@ -1,0 +1,7 @@
+name = "Size Chart"
+type = "theme"
+
+[blocks.size-chart]
+name = "Size Chart"
+target = "section"
+template = "blocks/size-chart.liquid"
