@@ -14,15 +14,25 @@ import polarisTranslations from "@shopify/polaris/locales/en.json";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css?url";
 
 import { login } from "../../shopify.server";
-
 import { loginErrorMessage } from "./error.server";
+import prisma from "../../db.server";
 
 export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const errors = loginErrorMessage(await login(request));
+  const recentShop = await prisma.shop.findFirst({
+    where: {
+      NOT: { shopDomain: { contains: "admin-test" } },
+    },
+    orderBy: { updatedAt: "desc" },
+  });
 
-  return { errors, polarisTranslations };
+  return {
+    errors,
+    polarisTranslations,
+    defaultShop: recentShop?.shopDomain || "",
+  };
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -36,14 +46,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function Auth() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const [shop, setShop] = useState("");
+  const [shop, setShop] = useState(loaderData?.defaultShop || "");
   const { errors } = actionData || loaderData;
 
   return (
     <PolarisAppProvider i18n={loaderData.polarisTranslations}>
       <Page>
         <Card>
-          <Form method="post">
+          <Form method="post" target="_top">
             <FormLayout>
               <Text variant="headingMd" as="h2">
                 Log in
@@ -52,13 +62,15 @@ export default function Auth() {
                 type="text"
                 name="shop"
                 label="Shop domain"
-                helpText="example.myshopify.com"
+                helpText="e.g. pot-app-test-store.myshopify.com"
                 value={shop}
                 onChange={setShop}
                 autoComplete="on"
                 error={errors.shop}
               />
-              <Button submit>Log in</Button>
+              <Button submit variant="primary">
+                Log in
+              </Button>
             </FormLayout>
           </Form>
         </Card>
