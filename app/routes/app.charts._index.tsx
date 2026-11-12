@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData, useSubmit } from "@remix-run/react";
+import { useLoaderData, useNavigate, useSubmit } from "@remix-run/react";
 import {
   Page,
   Card,
@@ -14,12 +14,12 @@ import {
   TextField,
   EmptyState,
 } from "@shopify/polaris";
-import { authenticate } from "../shopify.server";
+import { authenticateAdmin } from "../utils/auth.server";
 import { getOrCreateShop } from "../models/shop.server";
 import { listSizeCharts, duplicateSizeChart, deleteSizeChart } from "../models/chart.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { session } = await authenticate.admin(request);
+  const { session } = await authenticateAdmin(request);
   const shop = await getOrCreateShop(session.shop, session.accessToken);
   const charts = await listSizeCharts(shop.id);
 
@@ -27,7 +27,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  await authenticate.admin(request);
+  await authenticateAdmin(request);
   const formData = await request.formData();
   const intent = formData.get("intent");
   const chartId = formData.get("chartId") as string;
@@ -47,6 +47,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function ChartsList() {
   const { charts } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
   const submit = useSubmit();
   const [search, setSearch] = useState("");
 
@@ -69,11 +70,11 @@ export default function ChartsList() {
       title="Size Charts"
       primaryAction={{
         content: "Create Size Chart",
-        url: "/app/charts/new",
+        onAction: () => navigate("/app/charts/new"),
       }}
       backAction={{
         content: "Dashboard",
-        url: "/app",
+        onAction: () => navigate("/app"),
       }}
     >
       <BlockStack gap="400">
@@ -98,7 +99,7 @@ export default function ChartsList() {
                     ? undefined
                     : {
                         content: "Create Size Chart",
-                        url: "/app/charts/new",
+                        onAction: () => navigate("/app/charts/new"),
                       }
                 }
                 image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
@@ -128,7 +129,7 @@ export default function ChartsList() {
                     <IndexTable.Cell>
                       <Button
                         variant="plain"
-                        url={`/app/charts/${chart.id}`}
+                        onClick={() => navigate(`/app/charts/${chart.id}`)}
                       >
                         {chart.name}
                       </Button>
@@ -155,13 +156,13 @@ export default function ChartsList() {
                       <InlineStack gap="100">
                         <Button
                           size="micro"
-                          url={`/app/charts/${chart.id}`}
+                          onClick={() => navigate(`/app/charts/${chart.id}`)}
                         >
                           Edit
                         </Button>
                         <Button
                           size="micro"
-                          url={`/app/charts/${chart.id}/assignments`}
+                          onClick={() => navigate(`/app/charts/${chart.id}/assignments`)}
                         >
                           Targeting
                         </Button>

@@ -8,7 +8,7 @@ import {
   Button,
   Banner,
 } from "@shopify/polaris";
-import { authenticate } from "../shopify.server";
+import { authenticateAdmin } from "../utils/auth.server";
 import { getOrCreateShop } from "../models/shop.server";
 import { getSizeChart } from "../models/chart.server";
 import { setAssignments, getAssignments } from "../models/assignment.server";
@@ -16,7 +16,7 @@ import { AssignmentEditor } from "../components/AssignmentEditor";
 import type { SetAssignmentInput } from "../types/chart";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const { session } = await authenticate.admin(request);
+  const { session } = await authenticateAdmin(request);
   const shop = await getOrCreateShop(session.shop, session.accessToken);
 
   const chart = await getSizeChart(params.id as string);
@@ -37,7 +37,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
-  const { session } = await authenticate.admin(request);
+  const { session } = await authenticateAdmin(request);
   const shop = await getOrCreateShop(session.shop, session.accessToken);
   const chartId = params.id as string;
 
@@ -89,7 +89,7 @@ export default function ChartAssignmentsPage() {
       subtitle="Define which products or collections display this size chart"
       backAction={{
         content: "Chart Editor",
-        url: `/app/charts/${chart.id}`,
+        onAction: () => navigate(`/app/charts/${chart.id}`),
       }}
       primaryAction={{
         content: "Save Targeting Rules",

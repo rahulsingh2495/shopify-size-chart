@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useActionData, useLoaderData, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
 import {
   Page,
@@ -15,7 +15,7 @@ import {
   Badge,
   Text,
 } from "@shopify/polaris";
-import { authenticate } from "../shopify.server";
+import { authenticateAdmin } from "../utils/auth.server";
 import { getOrCreateShop } from "../models/shop.server";
 import { getSizeChart, updateSizeChart, deleteSizeChart, duplicateSizeChart } from "../models/chart.server";
 import { setAssignments } from "../models/assignment.server";
@@ -25,7 +25,7 @@ import { AssignmentEditor } from "../components/AssignmentEditor";
 import type { BaseUnit, DisplayMode, FitNote, Status, SetAssignmentInput } from "../types/chart";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const { session } = await authenticate.admin(request);
+  const { session } = await authenticateAdmin(request);
   const shop = await getOrCreateShop(session.shop, session.accessToken);
 
   const chart = await getSizeChart(params.id as string);
@@ -37,7 +37,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
-  const { session } = await authenticate.admin(request);
+  const { session, redirect } = await authenticateAdmin(request);
   const shop = await getOrCreateShop(session.shop, session.accessToken);
   const chartId = params.id as string;
 
@@ -180,7 +180,7 @@ export default function EditChart() {
       subtitle={`Last updated ${new Date(chart.updatedAt).toLocaleDateString()}`}
       backAction={{
         content: "Size Charts",
-        url: "/app/charts",
+        onAction: () => navigate("/app/charts"),
       }}
       primaryAction={{
         content: "Save Changes",
@@ -190,7 +190,7 @@ export default function EditChart() {
       secondaryActions={[
         {
           content: "Targeting Rules",
-          url: `/app/charts/${chart.id}/assignments`,
+          onAction: () => navigate(`/app/charts/${chart.id}/assignments`),
         },
         {
           content: "Duplicate",

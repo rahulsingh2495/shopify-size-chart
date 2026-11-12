@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import {
   Page,
   Layout,
@@ -14,12 +14,12 @@ import {
   IndexTable,
   EmptyState,
 } from "@shopify/polaris";
-import { authenticate } from "../shopify.server";
+import { authenticateAdmin } from "../utils/auth.server";
 import { getOrCreateShop } from "../models/shop.server";
 import { listSizeCharts, duplicateSizeChart, deleteSizeChart } from "../models/chart.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { session } = await authenticate.admin(request);
+  const { session } = await authenticateAdmin(request);
   const shop = await getOrCreateShop(session.shop, session.accessToken);
   const charts = await listSizeCharts(shop.id);
 
@@ -30,7 +30,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  await authenticate.admin(request);
+  await authenticateAdmin(request);
   const formData = await request.formData();
   const intent = formData.get("intent");
   const chartId = formData.get("chartId") as string;
@@ -50,6 +50,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function Dashboard() {
   const { charts } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
 
   const activeCount = charts.filter((c) => c.status === "active").length;
   const draftCount = charts.filter((c) => c.status === "draft").length;
@@ -59,7 +60,7 @@ export default function Dashboard() {
       title="Size Chart Dashboard"
       primaryAction={{
         content: "Create Size Chart",
-        url: "/app/charts/new",
+        onAction: () => navigate("/app/charts/new"),
       }}
     >
       <BlockStack gap="500">
@@ -134,7 +135,7 @@ export default function Dashboard() {
                 Recent Size Charts
               </Text>
               {charts.length > 0 && (
-                <Button variant="plain" url="/app/charts">
+                <Button variant="plain" onClick={() => navigate("/app/charts")}>
                   {`View all (${charts.length})`}
                 </Button>
               )}
@@ -145,7 +146,7 @@ export default function Dashboard() {
                 heading="Create your first size chart"
                 action={{
                   content: "Create Size Chart",
-                  url: "/app/charts/new",
+                  onAction: () => navigate("/app/charts/new"),
                 }}
                 image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
               >
@@ -171,7 +172,7 @@ export default function Dashboard() {
                     <IndexTable.Cell>
                       <Button
                         variant="plain"
-                        url={`/app/charts/${chart.id}`}
+                        onClick={() => navigate(`/app/charts/${chart.id}`)}
                       >
                         {chart.name}
                       </Button>
@@ -195,13 +196,13 @@ export default function Dashboard() {
                       <InlineStack gap="200">
                         <Button
                           size="micro"
-                          url={`/app/charts/${chart.id}`}
+                          onClick={() => navigate(`/app/charts/${chart.id}`)}
                         >
                           Edit
                         </Button>
                         <Button
                           size="micro"
-                          url={`/app/charts/${chart.id}/assignments`}
+                          onClick={() => navigate(`/app/charts/${chart.id}/assignments`)}
                         >
                           Targeting
                         </Button>

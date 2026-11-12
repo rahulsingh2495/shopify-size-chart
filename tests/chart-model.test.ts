@@ -13,11 +13,19 @@ describe("SizeChart model CRUD", () => {
   let testShopId: string;
 
   beforeEach(async () => {
-    // Clear test records
-    await prisma.chartAssignment.deleteMany({});
-    await prisma.sizeChartTable.deleteMany({});
-    await prisma.sizeChart.deleteMany({});
-    await prisma.shop.deleteMany({});
+    // Clear test records for this shop only
+    await prisma.chartAssignment.deleteMany({
+      where: { sizeChart: { shop: { shopDomain: "test-shop.myshopify.com" } } },
+    });
+    await prisma.sizeChartTable.deleteMany({
+      where: { sizeChart: { shop: { shopDomain: "test-shop.myshopify.com" } } },
+    });
+    await prisma.sizeChart.deleteMany({
+      where: { shop: { shopDomain: "test-shop.myshopify.com" } },
+    });
+    await prisma.shop.deleteMany({
+      where: { shopDomain: "test-shop.myshopify.com" },
+    });
 
     // Create a dummy test shop
     const shop = await prisma.shop.create({

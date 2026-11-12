@@ -10,11 +10,21 @@ describe("Storefront chart serialization", () => {
   let shopId: string;
 
   beforeEach(async () => {
-    await prisma.chartAssignment.deleteMany({});
-    await prisma.sizeChartTable.deleteMany({});
-    await prisma.sizeChart.deleteMany({});
-    await prisma.displaySettings.deleteMany({});
-    await prisma.shop.deleteMany({});
+    await prisma.chartAssignment.deleteMany({
+      where: { sizeChart: { shop: { shopDomain } } },
+    });
+    await prisma.sizeChartTable.deleteMany({
+      where: { sizeChart: { shop: { shopDomain } } },
+    });
+    await prisma.sizeChart.deleteMany({
+      where: { shop: { shopDomain } },
+    });
+    await prisma.displaySettings.deleteMany({
+      where: { shop: { shopDomain } },
+    });
+    await prisma.shop.deleteMany({
+      where: { shopDomain },
+    });
 
     const shop = await getOrCreateShop(shopDomain, "shpat_secret_token_123");
     shopId = shop.id;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useActionData, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
 import {
   Page,
@@ -12,7 +12,7 @@ import {
   Button,
   Banner,
 } from "@shopify/polaris";
-import { authenticate } from "../shopify.server";
+import { authenticateAdmin } from "../utils/auth.server";
 import { getOrCreateShop } from "../models/shop.server";
 import { createSizeChart } from "../models/chart.server";
 import { setAssignments } from "../models/assignment.server";
@@ -22,12 +22,12 @@ import { AssignmentEditor } from "../components/AssignmentEditor";
 import type { BaseUnit, DisplayMode, FitNote, Status, SetAssignmentInput } from "../types/chart";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await authenticate.admin(request);
+  await authenticateAdmin(request);
   return json({});
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const { session } = await authenticate.admin(request);
+  const { session, redirect } = await authenticateAdmin(request);
   const shop = await getOrCreateShop(session.shop, session.accessToken);
 
   const formData = await request.formData();
@@ -151,7 +151,7 @@ export default function NewChart() {
       title="Create New Size Chart"
       backAction={{
         content: "Size Charts",
-        url: "/app/charts",
+        onAction: () => navigate("/app/charts"),
       }}
       primaryAction={{
         content: "Save Chart",

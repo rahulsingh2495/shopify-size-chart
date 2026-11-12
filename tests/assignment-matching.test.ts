@@ -10,10 +10,18 @@ describe("Assignment matching rules", () => {
   let testShopId: string;
 
   beforeEach(async () => {
-    await prisma.chartAssignment.deleteMany({});
-    await prisma.sizeChartTable.deleteMany({});
-    await prisma.sizeChart.deleteMany({});
-    await prisma.shop.deleteMany({});
+    await prisma.chartAssignment.deleteMany({
+      where: { sizeChart: { shop: { shopDomain: "match-test.myshopify.com" } } },
+    });
+    await prisma.sizeChartTable.deleteMany({
+      where: { sizeChart: { shop: { shopDomain: "match-test.myshopify.com" } } },
+    });
+    await prisma.sizeChart.deleteMany({
+      where: { shop: { shopDomain: "match-test.myshopify.com" } },
+    });
+    await prisma.shop.deleteMany({
+      where: { shopDomain: "match-test.myshopify.com" },
+    });
 
     const shop = await prisma.shop.create({
       data: {

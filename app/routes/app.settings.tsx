@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useActionData, useLoaderData, useNavigation, useSubmit } from "@remix-run/react";
+import { useActionData, useLoaderData, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
 import {
   Page,
   Layout,
@@ -13,11 +13,11 @@ import {
   Banner,
   Text,
 } from "@shopify/polaris";
-import { authenticate } from "../shopify.server";
+import { authenticateAdmin } from "../utils/auth.server";
 import { getOrCreateShop, getShopSettings, upsertShopSettings } from "../models/shop.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { session } = await authenticate.admin(request);
+  const { session } = await authenticateAdmin(request);
   const shop = await getOrCreateShop(session.shop, session.accessToken);
   const settings = await getShopSettings(shop.id);
 
@@ -33,7 +33,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const { session } = await authenticate.admin(request);
+  const { session } = await authenticateAdmin(request);
   const shop = await getOrCreateShop(session.shop, session.accessToken);
 
   const formData = await request.formData();
@@ -54,6 +54,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function SettingsPage() {
   const { settings, shopDomain } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
   const submit = useSubmit();
   const navigation = useNavigation();
   const actionData = useActionData<typeof action>();
@@ -76,6 +77,10 @@ export default function SettingsPage() {
     <Page
       title="Storefront Display Settings"
       subtitle="Customize global theme colors and styles for your size charts"
+      backAction={{
+        content: "Dashboard",
+        onAction: () => navigate("/app"),
+      }}
       primaryAction={{
         content: "Save Settings",
         loading: isSubmitting,
