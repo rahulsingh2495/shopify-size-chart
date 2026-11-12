@@ -89,7 +89,7 @@ export default function ChartAssignmentsPage() {
       subtitle="Define which products or collections display this size chart"
       backAction={{
         content: "Chart Editor",
-        onAction: () => navigate(`/app/charts/${chart.id}`),
+        url: `/app/charts/${chart.id}`,
       }}
       primaryAction={{
         content: "Save Targeting Rules",

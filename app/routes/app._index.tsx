@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import {
   Page,
   Layout,
@@ -49,8 +49,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Dashboard() {
-  const { charts, shopDomain } = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
+  const { charts } = useLoaderData<typeof loader>();
 
   const activeCount = charts.filter((c) => c.status === "active").length;
   const draftCount = charts.filter((c) => c.status === "draft").length;
@@ -60,7 +59,7 @@ export default function Dashboard() {
       title="Size Chart Dashboard"
       primaryAction={{
         content: "Create Size Chart",
-        onAction: () => navigate("/app/charts/new"),
+        url: "/app/charts/new",
       }}
     >
       <BlockStack gap="500">
@@ -135,7 +134,7 @@ export default function Dashboard() {
                 Recent Size Charts
               </Text>
               {charts.length > 0 && (
-                <Button variant="plain" onClick={() => navigate("/app/charts")}>
+                <Button variant="plain" url="/app/charts">
                   {`View all (${charts.length})`}
                 </Button>
               )}
@@ -146,7 +145,7 @@ export default function Dashboard() {
                 heading="Create your first size chart"
                 action={{
                   content: "Create Size Chart",
-                  onAction: () => navigate("/app/charts/new"),
+                  url: "/app/charts/new",
                 }}
                 image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
               >
@@ -172,7 +171,7 @@ export default function Dashboard() {
                     <IndexTable.Cell>
                       <Button
                         variant="plain"
-                        onClick={() => navigate(`/app/charts/${chart.id}`)}
+                        url={`/app/charts/${chart.id}`}
                       >
                         {chart.name}
                       </Button>
@@ -196,15 +195,13 @@ export default function Dashboard() {
                       <InlineStack gap="200">
                         <Button
                           size="micro"
-                          onClick={() => navigate(`/app/charts/${chart.id}`)}
+                          url={`/app/charts/${chart.id}`}
                         >
                           Edit
                         </Button>
                         <Button
                           size="micro"
-                          onClick={() =>
-                            navigate(`/app/charts/${chart.id}/assignments`)
-                          }
+                          url={`/app/charts/${chart.id}/assignments`}
                         >
                           Targeting
                         </Button>

@@ -151,7 +151,7 @@ export default function NewChart() {
       title="Create New Size Chart"
       backAction={{
         content: "Size Charts",
-        onAction: () => navigate("/app/charts"),
+        url: "/app/charts",
       }}
       primaryAction={{
         content: "Save Chart",
@@ -222,7 +222,7 @@ export default function NewChart() {
                   <Button variant="primary" size="large" fullWidth onClick={handleSubmit} loading={isSubmitting}>
                     Save Size Chart
                   </Button>
-                  <Button fullWidth onClick={() => navigate("/app/charts")}>
+                  <Button fullWidth url="/app/charts">
                     Cancel
                   </Button>
                 </BlockStack>

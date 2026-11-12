@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData, useNavigate, useSubmit } from "@remix-run/react";
+import { useLoaderData, useSubmit } from "@remix-run/react";
 import {
   Page,
   Card,
@@ -47,7 +47,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function ChartsList() {
   const { charts } = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
   const submit = useSubmit();
   const [search, setSearch] = useState("");
 
@@ -70,11 +69,11 @@ export default function ChartsList() {
       title="Size Charts"
       primaryAction={{
         content: "Create Size Chart",
-        onAction: () => navigate("/app/charts/new"),
+        url: "/app/charts/new",
       }}
       backAction={{
         content: "Dashboard",
-        onAction: () => navigate("/app"),
+        url: "/app",
       }}
     >
       <BlockStack gap="400">
@@ -99,7 +98,7 @@ export default function ChartsList() {
                     ? undefined
                     : {
                         content: "Create Size Chart",
-                        onAction: () => navigate("/app/charts/new"),
+                        url: "/app/charts/new",
                       }
                 }
                 image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
@@ -129,7 +128,7 @@ export default function ChartsList() {
                     <IndexTable.Cell>
                       <Button
                         variant="plain"
-                        onClick={() => navigate(`/app/charts/${chart.id}`)}
+                        url={`/app/charts/${chart.id}`}
                       >
                         {chart.name}
                       </Button>
@@ -156,15 +155,13 @@ export default function ChartsList() {
                       <InlineStack gap="100">
                         <Button
                           size="micro"
-                          onClick={() => navigate(`/app/charts/${chart.id}`)}
+                          url={`/app/charts/${chart.id}`}
                         >
                           Edit
                         </Button>
                         <Button
                           size="micro"
-                          onClick={() =>
-                            navigate(`/app/charts/${chart.id}/assignments`)
-                          }
+                          url={`/app/charts/${chart.id}/assignments`}
                         >
                           Targeting
                         </Button>

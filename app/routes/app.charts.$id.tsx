@@ -180,7 +180,7 @@ export default function EditChart() {
       subtitle={`Last updated ${new Date(chart.updatedAt).toLocaleDateString()}`}
       backAction={{
         content: "Size Charts",
-        onAction: () => navigate("/app/charts"),
+        url: "/app/charts",
       }}
       primaryAction={{
         content: "Save Changes",
@@ -190,7 +190,7 @@ export default function EditChart() {
       secondaryActions={[
         {
           content: "Targeting Rules",
-          onAction: () => navigate(`/app/charts/${chart.id}/assignments`),
+          url: `/app/charts/${chart.id}/assignments`,
         },
         {
           content: "Duplicate",
@@ -276,7 +276,7 @@ export default function EditChart() {
                   <Button variant="primary" size="large" fullWidth onClick={handleSave} loading={isSubmitting}>
                     Save Changes
                   </Button>
-                  <Button fullWidth onClick={() => navigate("/app/charts")}>
+                  <Button fullWidth url="/app/charts">
                     Back to Charts
                   </Button>
                 </BlockStack>
