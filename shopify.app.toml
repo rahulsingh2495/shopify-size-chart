@@ -13,7 +13,11 @@ scopes = "read_products"
 api_version = "2024-10"
 
 [auth]
-redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
+redirect_urls = [
+  "https://shopify.dev/apps/default-app-home/auth/callback",
+  "https://shopify.dev/apps/default-app-home/auth/shopify/callback",
+  "https://shopify.dev/apps/default-app-home/api/auth"
+]
 
 [build]
 include_config_on_deploy = true
