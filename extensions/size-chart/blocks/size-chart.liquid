@@ -15,7 +15,11 @@
   data-override-button="{{ block.settings.button_text | escape }}"
   data-override-display="{{ block.settings.display_mode_override }}"
 >
-  <!-- Content dynamically mounted by size-chart.js -->
+  {% if request.design_mode and product == nil %}
+    <div style="padding: 12px 16px; border: 1px dashed #9ca3af; border-radius: 8px; text-align: center; font-size: 13px; color: #4b5563; background: #f9fafb; margin: 8px 0;">
+      📏 <strong>Size Chart:</strong> Please view this on a <strong>Product page</strong> (select <em>Products &gt; Default product</em> in the top dropdown).
+    </div>
+  {% endif %}
 </div>
 
 {% schema %}

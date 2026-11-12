@@ -27,7 +27,13 @@
         .then((r) => (r.ok ? r : fetch(`/api/chart?${p.toString()}`)))
         .then((r) => (r.ok ? r.json() : null))
         .then((data) => {
-          if (!data || !data.chart) return;
+          if (!data || !data.chart) {
+            if (window.Shopify?.designMode) {
+              container.innerHTML =
+                '<div style="padding:10px 14px;border:1px dashed #9ca3af;border-radius:6px;font-size:13px;color:#4b5563;background:#f9fafb;">📏 <strong>Size Chart:</strong> No active chart matches this product yet. Go to <strong>Apps &gt; Size Chart</strong> to create or activate a size chart.</div>';
+            }
+            return;
+          }
           renderChart(container, data.chart, {
             overrideButton: container.dataset.overrideButton,
             overrideDisplay: container.dataset.overrideDisplay,
@@ -117,7 +123,7 @@
     }
 
     const rulerSvg =
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.5 0l-3.5-3.5c-1-1-1-2.5 0-3.5L14.3 1.7c1-1 2.5-1 3.5 0l3.5 3.5c1 1 1 2.5 0 3.5z"/><path d="m14.5 4.5 2 2M11.5 7.5 14 10M8.5 10.5 11 13M5.5 13.5 8 16"/></svg>';
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.5 0l-3.5-3.5c-1-1-1-2.5 0-3.5z"/><path d="m14.5 4.5 2 2M11.5 7.5 14 10M8.5 10.5 11 13M5.5 13.5 8 16"/></svg>';
 
     if (displayMode === "inline") {
       container.innerHTML = `<div class="px-sc-inline-card"><h3 style="margin-top:0;margin-bottom:0.75rem;font-size:1.125rem;">${esc(
