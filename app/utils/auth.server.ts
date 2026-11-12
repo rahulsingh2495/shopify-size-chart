@@ -40,6 +40,7 @@ export async function authenticateAdmin(request: Request) {
       }
 
       if (shop && host) {
+        url.searchParams.delete("_data");
         url.searchParams.set("shop", shop);
         url.searchParams.set("host", host);
         url.searchParams.set("embedded", "1");

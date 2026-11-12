@@ -14,6 +14,7 @@ import {
   IndexTable,
   EmptyState,
 } from "@shopify/polaris";
+import { TitleBar } from "@shopify/app-bridge-react";
 import { authenticateAdmin } from "../utils/auth.server";
 import { getOrCreateShop } from "../models/shop.server";
 import { listSizeCharts, duplicateSizeChart, deleteSizeChart } from "../models/chart.server";
@@ -63,6 +64,11 @@ export default function Dashboard() {
         onAction: () => navigate("/app/charts/new"),
       }}
     >
+      <TitleBar title="Size Chart Dashboard">
+        <button variant="primary" onClick={() => navigate("/app/charts/new")}>
+          Create Size Chart
+        </button>
+      </TitleBar>
       <BlockStack gap="500">
         <Banner title="Quick Setup Guide" tone="info">
           <BlockStack gap="200">

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useActionData, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
 import {
@@ -12,6 +12,7 @@ import {
   Button,
   Banner,
 } from "@shopify/polaris";
+import { TitleBar } from "@shopify/app-bridge-react";
 import { authenticateAdmin } from "../utils/auth.server";
 import { getOrCreateShop } from "../models/shop.server";
 import { createSizeChart } from "../models/chart.server";
@@ -20,11 +21,6 @@ import { ChartTableEditor } from "../components/ChartTableEditor";
 import { DisplayModePicker } from "../components/DisplayModePicker";
 import { AssignmentEditor } from "../components/AssignmentEditor";
 import type { BaseUnit, DisplayMode, FitNote, Status, SetAssignmentInput } from "../types/chart";
-
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await authenticateAdmin(request);
-  return json({});
-};
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const { session, redirect } = await authenticateAdmin(request);
@@ -159,6 +155,11 @@ export default function NewChart() {
         onAction: handleSubmit,
       }}
     >
+      <TitleBar title="Create New Size Chart">
+        <button variant="primary" onClick={handleSubmit}>
+          Save Chart
+        </button>
+      </TitleBar>
       <BlockStack gap="500">
         {actionData?.error && (
           <Banner tone="critical">{actionData.error}</Banner>

@@ -14,6 +14,7 @@ import {
   TextField,
   EmptyState,
 } from "@shopify/polaris";
+import { TitleBar } from "@shopify/app-bridge-react";
 import { authenticateAdmin } from "../utils/auth.server";
 import { getOrCreateShop } from "../models/shop.server";
 import { listSizeCharts, duplicateSizeChart, deleteSizeChart } from "../models/chart.server";
@@ -77,6 +78,11 @@ export default function ChartsList() {
         onAction: () => navigate("/app"),
       }}
     >
+      <TitleBar title="Size Charts">
+        <button variant="primary" onClick={() => navigate("/app/charts/new")}>
+          Create Size Chart
+        </button>
+      </TitleBar>
       <BlockStack gap="400">
         <Card>
           <BlockStack gap="400">
