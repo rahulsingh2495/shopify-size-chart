@@ -92,7 +92,7 @@ describe("SizeChart model CRUD", () => {
   });
 
   it("lists size charts for a shop with assignment count", async () => {
-    const chart1 = await createSizeChart({
+    await createSizeChart({
       shopId: testShopId,
       name: "Chart 1",
       columns: ["Size"],

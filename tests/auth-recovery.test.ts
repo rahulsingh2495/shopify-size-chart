@@ -6,7 +6,7 @@ process.env.SHOPIFY_API_SECRET = "test_secret";
 process.env.SCOPES = "read_products";
 
 describe("authenticateAdmin helper", () => {
-  it("redirects document request missing params to same URL with shop/host/embedded", async () => {
+  it("enriches request with shop/host/embedded and redirects to session-token bounce page", async () => {
     const { authenticateAdmin } = await import("../app/utils/auth.server");
 
     // Calling authenticateAdmin on an embedded document request missing shop/host
@@ -18,13 +18,14 @@ describe("authenticateAdmin helper", () => {
 
     try {
       await authenticateAdmin(req);
-      expect.fail("Should have redirected");
+      expect.fail("Should have redirected to session token bounce page");
     } catch (e: any) {
       expect(e).toBeInstanceOf(Response);
       expect(e.status).toBe(302);
       const loc = e.headers.get("Location");
-      expect(loc).toContain("/app/charts?shop=pot-app-test-store.myshopify.com&host=");
+      expect(loc).toContain("/auth/session-token?shop=pot-app-test-store.myshopify.com&host=");
       expect(loc).toContain("&embedded=1");
+      expect(loc).not.toContain("/auth/login");
     }
   });
 
@@ -35,14 +36,15 @@ describe("authenticateAdmin helper", () => {
 
     try {
       await authenticateAdmin(req);
-      expect.fail("Should have redirected");
+      expect.fail("Should have redirected to session token bounce page");
     } catch (e: any) {
       expect(e).toBeInstanceOf(Response);
       expect(e.status).toBe(302);
       const loc = e.headers.get("Location");
-      expect(loc).toContain("/app/charts/new?shop=");
+      expect(loc).toContain("/auth/session-token?shop=");
       expect(loc).toContain("&host=");
       expect(loc).toContain("&embedded=1");
+      expect(loc).not.toContain("/auth/login");
     }
   });
 });

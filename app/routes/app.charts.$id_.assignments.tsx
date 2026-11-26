@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useActionData, useLoaderData, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
+import { useActionData, useLoaderData, useLocation, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
 import {
   Page,
   BlockStack,
@@ -65,7 +65,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
 export default function ChartAssignmentsPage() {
   const { chart, assignments: initialAssignments } = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
+  const location = useLocation();
   const submit = useSubmit();
   const navigation = useNavigation();
   const actionData = useActionData<{ error?: string; success?: boolean }>();
@@ -89,7 +89,7 @@ export default function ChartAssignmentsPage() {
       subtitle="Define which products or collections display this size chart"
       backAction={{
         content: "Chart Editor",
-        onAction: () => navigate(`/app/charts/${chart.id}`),
+        url: `/app/charts/${chart.id}${location.search}`,
       }}
       primaryAction={{
         content: "Save Targeting Rules",

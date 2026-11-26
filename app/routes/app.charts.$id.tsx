@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useActionData, useLoaderData, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
+import { useActionData, useLoaderData, useLocation, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
 import {
   Page,
   Layout,
@@ -9,12 +9,10 @@ import {
   BlockStack,
   TextField,
   Select,
-  Button,
   Banner,
-  InlineStack,
-  Badge,
   Text,
 } from "@shopify/polaris";
+import { TitleBar } from "@shopify/app-bridge-react";
 import { authenticateAdmin } from "../utils/auth.server";
 import { getOrCreateShop } from "../models/shop.server";
 import { getSizeChart, updateSizeChart, deleteSizeChart, duplicateSizeChart } from "../models/chart.server";
@@ -22,6 +20,7 @@ import { setAssignments } from "../models/assignment.server";
 import { ChartTableEditor } from "../components/ChartTableEditor";
 import { DisplayModePicker } from "../components/DisplayModePicker";
 import { AssignmentEditor } from "../components/AssignmentEditor";
+import { LivePreviewModal } from "../components/LivePreviewModal";
 import type { BaseUnit, DisplayMode, FitNote, Status, SetAssignmentInput } from "../types/chart";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -114,6 +113,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 export default function EditChart() {
   const { chart } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
+  const location = useLocation();
   const submit = useSubmit();
   const navigation = useNavigation();
   const actionData = useActionData<{ error?: string; success?: boolean }>();
@@ -140,17 +140,26 @@ export default function EditChart() {
   });
 
   const [assignments, setAssignmentsState] = useState<SetAssignmentInput[]>(
-    chart.assignments?.map((a) => ({
-      targetType: a.targetType as any,
-      targetValue: a.targetValue,
-      priority: a.priority,
-    })) || [],
+    chart.assignments && chart.assignments.length > 0
+      ? chart.assignments.map((a: any) => ({
+          targetType: a.targetType,
+          targetValue: a.targetValue,
+          priority: a.priority,
+        }))
+      : [
+          {
+            targetType: "all_products",
+            targetValue: "*",
+            priority: 0,
+          },
+        ],
   );
 
-  const handleSave = () => {
+  const [showPreview, setShowPreview] = useState(false);
+
+  const handleSubmit = () => {
     submit(
       {
-        intent: "save",
         name,
         status,
         fitNote,
@@ -177,65 +186,71 @@ export default function EditChart() {
   return (
     <Page
       title={chart.name}
-      subtitle={`Last updated ${new Date(chart.updatedAt).toLocaleDateString()}`}
       backAction={{
-        content: "Size Charts",
-        onAction: () => navigate("/app/charts"),
+        content: "Size charts",
+        url: `/app/charts${location.search}`,
       }}
       primaryAction={{
-        content: "Save Changes",
+        content: "Save changes",
         loading: isSubmitting,
-        onAction: handleSave,
+        onAction: handleSubmit,
       }}
       secondaryActions={[
         {
-          content: "Targeting Rules",
-          onAction: () => navigate(`/app/charts/${chart.id}/assignments`),
+          content: "👁️ Live preview",
+          onAction: () => setShowPreview(true),
         },
         {
           content: "Duplicate",
           onAction: handleDuplicate,
         },
         {
-          content: "Delete Chart",
+          content: "Delete",
           destructive: true,
           onAction: handleDelete,
         },
       ]}
     >
+      <TitleBar title={chart.name}>
+        <button onClick={() => setShowPreview(true)}>Live preview</button>
+        <button variant="primary" onClick={handleSubmit}>
+          Save changes
+        </button>
+      </TitleBar>
+
       <BlockStack gap="500">
         {actionData?.error && (
           <Banner tone="critical">{actionData.error}</Banner>
         )}
         {actionData?.success && (
-          <Banner tone="success">Size chart updated successfully!</Banner>
+          <Banner tone="success" onDismiss={() => {}}>
+            Size chart saved successfully!
+          </Banner>
         )}
 
         <Layout>
+          {/* Left Column (2/3) */}
           <Layout.Section>
             <BlockStack gap="400">
+              {/* Card 1: Chart details */}
               <Card>
                 <BlockStack gap="400">
-                  <InlineStack align="space-between" blockAlign="center">
-                    <Text as="h2" variant="headingMd">
-                      Chart Details
-                    </Text>
-                    <Badge tone={status === "active" ? "success" : "info"}>
-                      {status.toUpperCase()}
-                    </Badge>
-                  </InlineStack>
-
+                  <Text as="h2" variant="headingMd">
+                    Chart details
+                  </Text>
                   <TextField
-                    label="Size Chart Name"
+                    label="Size chart name"
                     value={name}
                     onChange={setName}
+                    placeholder="e.g. Women's bottoms"
+                    helpText="Internal name for organizing your size charts"
                     autoComplete="off"
                   />
 
                   <Select
                     label="Status"
                     options={[
-                      { label: "Active (Visible on matching products)", value: "active" },
+                      { label: "Active (Visible on storefront matching products)", value: "active" },
                       { label: "Draft (Hidden from storefront)", value: "draft" },
                     ]}
                     value={status}
@@ -244,6 +259,7 @@ export default function EditChart() {
                 </BlockStack>
               </Card>
 
+              {/* Card 2: Measurements */}
               <ChartTableEditor
                 columns={tableData.columns}
                 rows={tableData.rows}
@@ -251,6 +267,7 @@ export default function EditChart() {
                 onChange={setTableData}
               />
 
+              {/* Card 3: Product targeting */}
               <AssignmentEditor
                 assignments={assignments}
                 onChange={setAssignmentsState}
@@ -258,6 +275,7 @@ export default function EditChart() {
             </BlockStack>
           </Layout.Section>
 
+          {/* Right Column (1/3) */}
           <Layout.Section variant="oneThird">
             <BlockStack gap="400">
               <DisplayModePicker
@@ -270,21 +288,23 @@ export default function EditChart() {
                 onFitNoteChange={setFitNote}
                 onMeasurementInstructionsChange={setMeasurementInstructions}
               />
-
-              <Card>
-                <BlockStack gap="300">
-                  <Button variant="primary" size="large" fullWidth onClick={handleSave} loading={isSubmitting}>
-                    Save Changes
-                  </Button>
-                  <Button fullWidth url="/app/charts">
-                    Back to Charts
-                  </Button>
-                </BlockStack>
-              </Card>
             </BlockStack>
           </Layout.Section>
         </Layout>
       </BlockStack>
+
+      {/* Live Preview Modal */}
+      <LivePreviewModal
+        open={showPreview}
+        onClose={() => setShowPreview(false)}
+        chartName={name}
+        buttonText={buttonText}
+        fitNote={fitNote}
+        measurementInstructions={measurementInstructions}
+        columns={tableData.columns}
+        rows={tableData.rows}
+        baseUnit={tableData.baseUnit}
+      />
     </Page>
   );
 }

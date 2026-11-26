@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixelotech Size Chart &amp; Size Guide — Shopify App Store Demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #202223;
+      background-color: #ffffff;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navigation Bar */
+    .app-store-nav {
+      border-bottom: 1px solid #e1e3e5;
+      padding: 12px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      z-index: 100;
+    }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .shopify-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 17px;
+      color: #000000;
+      text-decoration: none;
+    }
+    .shopify-logo svg {
+      color: #95bf47;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f1f2f3;
+      border: 1px solid #dcdfe4;
+      border-radius: 20px;
+      padding: 8px 16px;
+      width: 440px;
+      font-size: 14px;
+      color: #6d7175;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .nav-right a {
+      color: #202223;
+      text-decoration: none;
+    }
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #ec4899;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Container: 90% Width on All Screens */
+    .page-container {
+      width: 90%;
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 36px 0 80px 0;
+    }
+
+    /* Hero Section */
+    .app-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 340px) 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+      align-items: start;
+    }
+    .app-identity {
+      display: flex;
+      flex-direction: column;
+    }
+    .app-icon-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .app-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+      flex-shrink: 0;
+    }
+    .app-title-block h1 {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+    .built-for-shopify {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    .pricing-summary {
+      font-size: 13.5px;
+      color: #475569;
+      margin-top: 14px;
+      line-height: 1.4;
+    }
+    .popularity-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 10px;
+    }
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .rating-stars {
+      color: #f59e0b;
+    }
+    .rating-count {
+      color: #64748b;
+      font-weight: 400;
+    }
+    .developer-row {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 8px;
+    }
+    .developer-row strong {
+      color: #0f172a;
+    }
+
+    .install-btn {
+      display: block;
+      width: 100%;
+      background: #000000;
+      color: #ffffff;
+      text-align: center;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      margin-top: 24px;
+      transition: background 0.15s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .install-btn:hover {
+      background: #27272a;
+    }
+    .demo-store-link {
+      display: block;
+      text-align: center;
+      margin-top: 12px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #005bd3;
+      text-decoration: none;
+    }
+    .demo-store-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Media Banner Slider */
+    .hero-banner-container {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+    }
+    .banner-main {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%);
+      color: #ffffff;
+      padding: 36px 36px 28px 36px;
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 28px;
+      align-items: center;
+      min-height: 380px;
+    }
+    .banner-content h2 {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .banner-content p {
+      font-size: 14px;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .works-with-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .works-pill {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 11.5px;
+      font-weight: 500;
+    }
+
+    /* Mockup inside Banner */
+    .banner-mockup {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 16px;
+      color: #0f172a;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+      font-size: 12px;
+    }
+    .mock-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .mock-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      margin-top: 8px;
+    }
+    .mock-table th, .mock-table td {
+      border: 1px solid #e2e8f0;
+      padding: 5px 8px;
+      text-align: left;
+    }
+    .mock-table th {
+      background: #f8fafc;
+      font-weight: 600;
+    }
+    .mock-badge {
+      display: inline-block;
+      background: #dcfce7;
+      color: #166534;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    /* Thumbnail Row */
+    .thumbnails-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 12px 16px;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+    }
+    .thumb-item {
+      border: 2px solid transparent;
+      border-radius: 6px;
+      padding: 8px;
+      background: #f8fafc;
+      font-size: 11px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+    .thumb-item.active {
+      border-color: #005bd3;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    /* Overview Section */
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
+    }
+    .overview-text {
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.6;
+      margin-bottom: 18px;
+      max-width: 960px;
+    }
+    .feature-bullets {
+      list-style: none;
+      margin-bottom: 36px;
+    }
+    .feature-bullets li {
+      font-size: 14px;
+      color: #1e293b;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .feature-bullets li::before {
+      content: "•";
+      color: #005bd3;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* Metadata Specs Grid */
+    .specs-grid {
+      border-top: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 24px 0;
+      margin-bottom: 48px;
+    }
+    .spec-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      padding: 10px 0;
+      font-size: 13.5px;
+    }
+    .spec-label {
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .spec-value {
+      color: #475569;
+      line-height: 1.5;
+    }
+    .cat-row-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    .cat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .cat-link {
+      color: #0f172a;
+      font-weight: 600;
+      text-decoration: underline;
+      font-size: 13.5px;
+    }
+    .cat-link:hover {
+      color: #005bd3;
+    }
+    .toggle-features-btn {
+      background: none;
+      border: none;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .toggle-features-btn:hover {
+      color: #0f172a;
+      background: #f1f5f9;
+    }
+    .cat-subheading {
+      font-weight: 600;
+      color: #0f172a;
+      font-size: 13px;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+    .cat-tags-text {
+      color: #334155;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    /* PRICING SECTION (Matches Reference Image 1) */
+    .pricing-section {
+      margin-top: 48px;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 40px;
+    }
+    .pricing-header {
+      margin-bottom: 24px;
+    }
+    .pricing-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+    .pricing-header p {
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    .pricing-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+    .plan-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px 20px 20px 20px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+      position: relative;
+    }
+    .plan-card:hover {
+      box-shadow: 0 10px 20px -5px rgba(0,0,0,0.06);
+      border-color: #cbd5e1;
+    }
+    .plan-card.growth-card {
+      border: 2px solid #005bd3;
+      box-shadow: 0 8px 16px -4px rgba(0, 91, 211, 0.12);
+    }
+    .popular-tag {
+      position: absolute;
+      top: -11px;
+      left: 20px;
+      background: #005bd3;
+      color: #ffffff;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 10px;
+      border-radius: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .plan-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+    .plan-price {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .plan-price-sub {
+      font-size: 13px;
+      font-weight: 500;
+      color: #64748b;
+    }
+    .plan-annual {
+      font-size: 11.5px;
+      color: #64748b;
+      margin-bottom: 18px;
+    }
+
+    .plan-features-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .plan-features-list {
+      list-style: none;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+    .plan-features-list li {
+      font-size: 12.5px;
+      color: #334155;
+      margin-bottom: 9px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.35;
+    }
+    .plan-features-list li svg {
+      flex-shrink: 0;
+      color: #16a34a;
+      margin-top: 2px;
+    }
+
+    .plan-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid #dcdfe4;
+      background: #ffffff;
+      color: #202223;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .plan-btn:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+    .plan-btn.primary-plan-btn {
+      background: #000000;
+      color: #ffffff;
+      border-color: #000000;
+    }
+    .plan-btn.primary-plan-btn:hover {
+      background: #27272a;
+    }
+
+    .pricing-footer-note {
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    /* Floating Switcher for Interactive Testing */
+    .demo-control-bar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #0f172a;
+      color: #ffffff;
+      border-radius: 30px;
+      padding: 10px 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12.5px;
+      font-weight: 600;
+      z-index: 1000;
+    }
+    .demo-control-bar button {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Responsive Media Queries for All Screen Sizes */
+    @media (max-width: 1280px) {
+      .pricing-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .page-container {
+        width: 92%;
+      }
+      .app-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .banner-main {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 28px 24px;
+      }
+      .thumbnails-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .specs-grid .spec-row {
+        grid-template-columns: 150px 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-container {
+        width: 94%;
+        padding: 24px 0 60px 0;
+      }
+      .app-store-nav {
+        padding: 10px 4%;
+      }
+      .search-box {
+        display: none;
+      }
+      .pricing-cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .thumbnails-row {
+        grid-template-columns: 1fr;
+      }
+      .specs-grid .spec-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+      .banner-main {
+        padding: 20px 16px;
+      }
+      .banner-content h2 {
+        font-size: 22px;
+      }
+      .demo-control-bar {
+        bottom: 12px;
+        right: 12px;
+        padding: 8px 14px;
+        font-size: 11px;
+      }
+    }
+
+    /* SUPPORT SECTION */
+    .support-section {
+      margin-top: 60px;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 48px;
+    }
+    .support-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 48px;
+    }
+    .support-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+    .support-header p {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.4;
+    }
+    .support-details {
+      display: flex;
+      flex-direction: column;
+    }
+    .support-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      padding: 24px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 13.5px;
+    }
+    .support-row:first-child {
+      padding-top: 0;
+    }
+    .support-row:last-child {
+      border-bottom: none;
+    }
+    .support-row-label {
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .support-row-content {
+      color: #334155;
+      line-height: 1.5;
+    }
+    .support-link {
+      display: block;
+      color: #005bd3;
+      text-decoration: none;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .support-link:hover {
+      text-decoration: underline;
+    }
+    .developer-name {
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+    .developer-address {
+      color: #64748b;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    .data-group {
+      margin-bottom: 20px;
+    }
+    .data-group:last-child {
+      margin-bottom: 0;
+    }
+    .data-group-title {
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+    .data-item-title {
+      font-weight: 500;
+      color: #334155;
+      margin-bottom: 2px;
+    }
+    .data-item-desc {
+      color: #64748b;
+      font-size: 12.5px;
+    }
+    .inline-link {
+      color: #005bd3;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 1024px) {
+      .support-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .support-row {
+        grid-template-columns: 160px 1fr;
+        padding: 18px 0;
+      }
+    }
+    @media (max-width: 640px) {
+      .support-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Shopify App Store Navigation -->
+  <header class="app-store-nav">
+    <div class="nav-left">
+      <a href="#" class="shopify-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.5 7.5L16 4l-1.5 1 2.5 3H7L9.5 5 8 4 4.5 7.5C4.2 7.8 4 8.2 4 8.7v10.6c0 1 .8 1.7 1.7 1.7h12.6c1 0 1.7-.8 1.7-1.7V8.7c0-.5-.2-.9-.5-1.2zM12 17c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z"/>
+        </svg>
+        <span>Shopify App Store</span>
+      </a>
+      <div class="search-box">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.3-4.3"></path>
+        </svg>
+        <span>Search apps, guides, and more</span>
+      </div>
+    </div>
+    <div class="nav-right">
+      <a href="#">Browse apps ▾</a>
+      <div class="user-avatar">Ell</div>
+    </div>
+  </header>
+
+  <main class="page-container">
+
+    <!-- App Hero Section (Matching Reference Image 3) -->
+    <div class="app-hero-grid">
+      <!-- Left Column: Identity -->
+      <div class="app-identity">
+        <div class="app-icon-row">
+          <div class="app-icon">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.5 0l-3.5-3.5c-1-1-1-2.5 0-3.5z"/>
+              <path d="m14.5 4.5 2 2M11.5 7.5 14 10M8.5 10.5 11 13M5.5 13.5 8 16"/>
+            </svg>
+          </div>
+          <div class="app-title-block">
+            <h1>Pixelotech Size Chart &amp; Size Guide</h1>
+            <span class="built-for-shopify">✓ Built for Shopify</span>
+          </div>
+        </div>
+
+        <div class="pricing-summary">
+          <strong>Pricing</strong><br>
+          Free plan available. 14-day free trial on paid plans.
+        </div>
+
+        <div class="popularity-badge">
+          <span>Popular with stores like yours</span><br>
+        </div>
+
+        <div class="rating-row">
+          <span>Rating</span>
+          <span class="rating-stars">★★★★★</span>
+          <span>5.0</span>
+          <span class="rating-count">(880+)</span>
+        </div>
+
+        <div class="developer-row">
+          Developer: <strong>Pixelotech</strong>
+        </div>
+
+        <a href="https://admin.shopify.com/store/pot-app-test-store/apps/size-chart-126/app" target="_blank" class="install-btn" style="display: flex; align-items: center; justify-content: center; text-decoration: none; text-align: center;">Install / Open App</a>
+        <a href="https://pot-app-test-store.myshopify.com" target="_blank" class="demo-store-link" style="display: flex; align-items: center; gap: 4px;">
+          <span>View demo store ↗</span>
+          <span style="font-size: 11px; color: #64748b; font-weight: normal;">(Pass: <strong>romeo</strong>)</span>
+        </a>
+      </div>
+
+      <!-- Right Column: Interactive Banner Gallery (Matching Reference Image 3) -->
+      <div class="hero-banner-container">
+        <div class="banner-main" id="bannerDisplay">
+          <div class="banner-content">
+            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; background: rgba(255,255,255,0.15); display: inline-block; padding: 2px 8px; border-radius: 12px; margin-bottom: 8px;">
+              ⚡ Ready for Online Store 2.0
+            </div>
+            <h2>Reduce Returns &amp; Boost Conversions</h2>
+            <p>
+              Customizable size charts and measurement guides help shoppers find the right fit for apparel, footwear, jewelry &amp; accessories.
+            </p>
+            <div class="works-with-pills">
+              <span class="works-pill">Works with:</span>
+              <span class="works-pill">Claude</span>
+              <span class="works-pill">ChatGPT</span>
+              <span class="works-pill">Sidekick</span>
+              <span class="works-pill">Google Analytics</span>
+            </div>
+          </div>
+
+          <!-- Live Mockup on Right -->
+          <div class="banner-mockup">
+            <div class="mock-header">
+              <span>Classic cotton tee</span>
+              <span style="color: #64748b;">$32.00</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span class="mock-badge">✓ True to size</span>
+              <span style="font-size: 10px; font-weight: 600; color: #2563eb; background: #eff6ff; padding: 2px 6px; border-radius: 4px;">INCHES / CM</span>
+            </div>
+            <table class="mock-table">
+              <thead>
+                <tr>
+                  <th>Size</th>
+                  <th>Waist (in)</th>
+                  <th>Hip (in)</th>
+                  <th>Inseam (in)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>28</td><td>28 - 29</td><td>35 - 36</td><td>30</td></tr>
+                <tr><td>30</td><td>30 - 31</td><td>37 - 38</td><td>30</td></tr>
+                <tr><td>32</td><td>32 - 33</td><td>39 - 40</td><td>32</td></tr>
+                <tr><td>34</td><td>34 - 35</td><td>41 - 42</td><td>32</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Thumbnails -->
+        <div class="thumbnails-row">
+          <div class="thumb-item active">1. Size Guide Overview</div>
+          <div class="thumb-item">2. 25+ Category Templates</div>
+          <div class="thumb-item">3. Smart Targeting Rules</div>
+          <div class="thumb-item">4. Auto Unit Conversion</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overview Copy (Matching Reference Image from Shopify App Store) -->
+    <section>
+      <p class="overview-text" style="font-size: 15px; line-height: 1.65; color: #1e293b; max-width: 100%;">
+        Sizing confusion costs apparel sales. Unsure shoppers leave or return. <strong>Pixelotech Size Chart &amp; Size Guide</strong> adds customizable size charts and size guides to Shopify product pages for fashion, footwear, jewelry &amp; accessories. The result? Fewer returns, more confident checkouts. Add size charts with measurement tables, tabs &amp; images. Bulk import size charts via CSV. Use 25+ size chart templates, auto unit conversion and a responsive size guide modal. Fit guidance recommendations find each shopper's fit instantly. Switching apps? We migrate your size charts free.
+      </p>
+
+      <ul class="feature-bullets" style="margin-top: 18px; margin-bottom: 28px;">
+        <li style="font-size: 14.5px; color: #1e293b; margin-bottom: 10px;">
+          • <strong>25+ size chart templates</strong> for apparel, footwear, jewelry &amp; accessories — quick setup
+        </li>
+        <li style="font-size: 14.5px; color: #1e293b; margin-bottom: 10px;">
+          • <strong>Bulk import size charts via CSV</strong> — copy/paste or upload spreadsheets with zero manual entry
+        </li>
+        <li style="font-size: 14.5px; color: #1e293b; margin-bottom: 10px;">
+          • <strong>Size guide display options</strong> — floating button, inline table, accordion, or next to size selector
+        </li>
+        <li style="font-size: 14.5px; color: #1e293b; margin-bottom: 10px;">
+          • <strong>20+ languages, unit conversion &amp; multiple size labels</strong> for global stores
+        </li>
+        <li style="font-size: 14.5px; color: #1e293b; margin-bottom: 10px;">
+          • <strong>Fit guidance &amp; fit finder badges</strong> — shoppers get their right size instantly with zero doubts
+        </li>
+      </ul>
+    </section>
+
+    <!-- Specs Grid (Matching Exact Shopify App Store Categories & Feature Tags) -->
+    <div class="specs-grid">
+      <!-- Languages -->
+      <div class="spec-row">
+        <div class="spec-label">Languages</div>
+        <div class="spec-value" style="color: #334155; line-height: 1.6;">
+          English, Spanish, French, German, Italian, Swedish, Japanese, Czech, Danish, Dutch, Norwegian (Bokmål), Polish, Portuguese (Brazil), Portuguese (Portugal), Finnish, Turkish, Thai, Chinese (Simplified), Chinese (Traditional), and Korean
+        </div>
+      </div>
+
+      <!-- Works with -->
+      <div class="spec-row">
+        <div class="spec-label">Works with</div>
+        <div class="spec-value" style="color: #334155; line-height: 1.6; font-weight: 500;">
+          Shopify Admin, ChatGPT, Claude, Codex, Google Analytics, MCP, Sidekick
+        </div>
+      </div>
+
+      <!-- Categories with Expandable Tags -->
+      <div class="spec-row" style="align-items: flex-start;">
+        <div class="spec-label">Categories</div>
+        <div class="cat-row-container">
+          <!-- Category 1: Product comparison -->
+          <div class="cat-header">
+            <a href="javascript:void(0)" class="cat-link">Product comparison</a>
+            <button class="toggle-features-btn" id="toggleCompBtn" onclick="toggleCategoryFeatures('compFeatures', this)">Hide features</button>
+          </div>
+
+          <div id="compFeatures" style="display: block; margin-bottom: 16px;">
+            <div class="cat-subheading">Comparison tools</div>
+            <div class="cat-tags-text">
+              Comparison table, Pop-ups, Size charts, Multi-product, Variants, Specifications, Recommendations, AI recommendations, Filter and sort, Show and hide, Images, Videos, Analytics
+            </div>
+
+            <div class="cat-subheading" style="margin-top: 12px;">Display options</div>
+            <div class="cat-tags-text">
+              Drag and drop editor, Table layout, Custom CSS, Color and font, Custom icons, Custom text, Templates, Import and export, Floating chart, Unit conversion, Multi-language, Translation, Product page, Collection page, Mobile responsive
+            </div>
+          </div>
+
+          <!-- Category 2: Product variants -->
+          <div class="cat-header" style="border-top: 1px solid #f1f5f9; padding-top: 12px; margin-top: 4px;">
+            <a href="javascript:void(0)" class="cat-link">Product variants</a>
+            <button class="toggle-features-btn" id="toggleVarBtn" onclick="toggleCategoryFeatures('varFeatures', this)">Show features</button>
+          </div>
+
+          <div id="varFeatures" style="display: none; margin-top: 8px;">
+            <div class="cat-subheading">Variant management</div>
+            <div class="cat-tags-text">
+              Variant size matrix, SKU mapping, Color swatch sizing, Inventory sync, Size dropdown linkage, Multiple unit systems (US, UK, EU)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRICING SECTION (Matching Reference Image 1 — With Distinct Tiers: Free, $6.95, $12.95, $24.95) -->
+    <section class="pricing-section">
+      <div class="pricing-header">
+        <h2>Pricing</h2>
+        <p>Choose the plan that best fits your business.</p>
+      </div>
+
+      <div class="pricing-cards-grid">
+        <!-- Plan 1: Starter (Free) -->
+        <div class="plan-card">
+          <div>
+            <div class="plan-name">Starter</div>
+            <div class="plan-price">Free</div>
+            <div class="plan-annual">Forever free plan</div>
+
+            <div class="plan-features-title">Features</div>
+            <ul class="plan-features-list">
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Publish up to <strong>2 size charts</strong>
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Assign by <strong>Product &amp; Collection</strong>
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <strong>Popup modal &amp; Inline</strong> display
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Automatic <strong>Inches / CM conversion</strong>
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Core Tops &amp; Bottoms templates
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Import &amp; export via CSV
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Live preview in admin
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <strong>Zero watermarks</strong>
+              </li>
+            </ul>
+          </div>
+
+          <button class="plan-btn" onclick="alert('Selected Starter Plan (Free)')">Current Plan</button>
+        </div>
+
+        <!-- Plan 2: Growth ($6.95 / mo) -->
+        <div class="plan-card growth-card">
+          <span class="popular-tag">Most Popular</span>
+          <div>
+            <div class="plan-name">Growth</div>
+            <div class="plan-price">$6.95 <span class="plan-price-sub">/ month</span></div>
+            <div class="plan-annual">or $69.50/year and save 17%</div>
+
+            <div class="plan-features-title">Features</div>
+            <ul class="plan-features-list">
+              <li style="font-weight: 600; color: #005bd3;">✓ Everything in Starter, plus:</li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Publish up to <strong>10 size charts</strong>
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Target by <strong>Tag, Vendor &amp; Product Type</strong>
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <strong>Accordion &amp; Floating Button</strong> modes
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                All <strong>25+ category templates</strong>
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Button style presets &amp; ruler icon toggle
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Basic chart view analytics
+              </li>
+            </ul>
+          </div>
+
+          <button class="plan-btn primary-plan-btn" onclick="alert('14-day free trial activated for Growth Plan ($6.95/mo)')">14-day free trial</button>
+        </div>
+
+        <!-- Plan 3: Pro ($12.95 / mo) -->
+        <div class="plan-card">
+          <div>
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">$12.95 <span class="plan-price-sub">/ month</span></div>
+            <div class="plan-annual">or $129.50/year and save 17%</div>
+
+            <div class="plan-features-title">Features</div>
+            <ul class="plan-features-list">
+              <li style="font-weight: 600; color: #005bd3;">✓ Everything in Growth, plus:</li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <strong>Unlimited published size charts</strong>
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Advanced rule priority overrides
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <strong>Custom CSS injection</strong>
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Custom fit guidance badges
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Multi-chart one-click duplication
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Chart clicks &amp; engagement analytics
+              </li>
+            </ul>
+          </div>
+
+          <button class="plan-btn" onclick="alert('14-day free trial activated for Pro Plan ($12.95/mo)')">14-day free trial</button>
+        </div>
+
+        <!-- Plan 4: Advanced ($24.95 / mo) -->
+        <div class="plan-card">
+          <div>
+            <div class="plan-name">Advanced</div>
+            <div class="plan-price">$24.95 <span class="plan-price-sub">/ month</span></div>
+            <div class="plan-annual">or $249.50/year and save 17%</div>
+
+            <div class="plan-features-title">Features</div>
+            <ul class="plan-features-list">
+              <li style="font-weight: 600; color: #005bd3;">✓ Everything in Pro, plus:</li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <strong>Built for high-traffic stores</strong>
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Multi-language auto-translation
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Free chart migration from other apps
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <strong>Priority 24/7 SLA support</strong>
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Dedicated white-glove onboarding
+              </li>
+            </ul>
+          </div>
+
+          <button class="plan-btn" onclick="alert('14-day free trial activated for Advanced Plan ($24.95/mo)')">14-day free trial</button>
+        </div>
+      </div>
+
+      <div class="pricing-footer-note">
+        All charges are billed in USD. Recurring and usage-based charges are billed every 30 days.
+      </div>
+    </section>
+
+    <!-- SUPPORT & DEVELOPER SECTION (Based on Shopify App Store Specification) -->
+    <section class="support-section">
+      <div class="support-grid">
+        <!-- Left Column -->
+        <div class="support-header">
+          <h2>Support</h2>
+          <p>App support provided by Pixelotech.</p>
+        </div>
+
+        <!-- Right Column Details -->
+        <div class="support-details">
+          <!-- Row 1: Resources -->
+          <div class="support-row">
+            <div class="support-row-label">Resources</div>
+            <div class="support-row-content">
+              <a href="#" class="support-link">Privacy policy</a>
+              <a href="#" class="support-link">FAQ</a>
+              <a href="#" class="support-link">Tutorial</a>
+            </div>
+          </div>
+
+          <!-- Row 2: Developer -->
+          <div class="support-row">
+            <div class="support-row-label">Developer</div>
+            <div class="support-row-content">
+              <div class="developer-name">Pixelotech</div>
+              <a href="https://pixelotech.com" target="_blank" class="support-link">Website</a>
+              <div class="developer-address">B-Block, Sector 63, Noida, Uttar Pradesh 201301, IN</div>
+            </div>
+          </div>
+
+          <!-- Row 3: Launched -->
+          <div class="support-row">
+            <div class="support-row-label">Launched</div>
+            <div class="support-row-content" style="color: #0f172a; font-weight: 500;">
+              November 2026
+            </div>
+          </div>
+
+          <!-- Row 4: Data access -->
+          <div class="support-row">
+            <div class="support-row-label">Data access</div>
+            <div class="support-row-content">
+              <p style="margin-bottom: 18px; color: #475569; font-size: 13.5px;">
+                This app needs access to the following data to work on your store. Learn why in the developer's 
+                <a href="#" class="inline-link">privacy policy</a>.
+              </p>
+
+              <div class="data-group">
+                <div class="data-group-title">View customer data:</div>
+                <div class="data-item-title">Device and activity data</div>
+                <div class="data-item-desc">Geolocation, IP address, browser and operating system</div>
+              </div>
+
+              <div class="data-group">
+                <div class="data-group-title">View staff and contributor data:</div>
+                <div class="data-item-title">Store owner</div>
+                <div class="data-item-desc">Name, email address, phone number, physical address</div>
+                <div class="data-item-title" style="margin-top: 8px;">Blog contributors</div>
+                <div class="data-item-desc">Email address, IP address, browser and operating system</div>
+              </div>
+
+              <div class="data-group">
+                <div class="data-group-title">View and edit store data:</div>
+                <div class="data-item-title">Edit products</div>
+                <div class="data-item-desc">Products, product listings, collections</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive Demo Bar -->
+  <div class="demo-control-bar">
+    <span>💡 Pixelotech App Store Preview Demo</span>
+    <button onclick="window.scrollTo({ top: document.querySelector('.pricing-section').offsetTop - 60, behavior: 'smooth' })">Jump to Pricing</button>
+  </div>
+
+  <script>
+    function toggleCategoryFeatures(id, btn) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.style.display === 'none') {
+        el.style.display = 'block';
+        btn.textContent = 'Hide features';
+      } else {
+        el.style.display = 'none';
+        btn.textContent = 'Show features';
+      }
+    }
+  </script>
+
+</body>
+</html>

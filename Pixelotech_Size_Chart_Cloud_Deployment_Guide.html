@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pixelotech Size Chart - 24/7 Cloud Deployment Guide</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1e293b;
+      line-height: 1.5;
+      font-size: 13px;
+      background: #ffffff;
+    }
+    .header {
+      border-bottom: 2px solid #005bd3;
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .header-left h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+      margin-bottom: 4px;
+    }
+    .header-left .subtitle {
+      font-size: 13px;
+      color: #005bd3;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .header-right {
+      text-align: right;
+      font-size: 11.5px;
+      color: #64748b;
+      line-height: 1.4;
+    }
+    .header-right strong {
+      color: #0f172a;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-blue {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+    .badge-green {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #0f172a;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 14px;
+      background: #005bd3;
+      border-radius: 2px;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .overview-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      background: #f8fafc;
+    }
+    .overview-card h3 {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .overview-card p {
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.45;
+    }
+
+    .step-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .step-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .step-number {
+      background: #005bd3;
+      color: #ffffff;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .step-desc {
+      font-size: 12.5px;
+      color: #334155;
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-family: Consolas, "Courier New", Courier, monospace;
+      font-size: 11px;
+      line-height: 1.4;
+      overflow-x: auto;
+      margin-bottom: 8px;
+    }
+    code {
+      font-family: Consolas, "Courier New", Courier, monospace;
+      color: #005bd3;
+      background: #f1f5f9;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 11.5px;
+    }
+    pre code {
+      color: #38bdf8;
+      background: transparent;
+      padding: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 10px;
+      text-align: left;
+    }
+    th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    td code {
+      font-size: 11px;
+    }
+
+    .checklist {
+      list-style: none;
+      margin-top: 8px;
+    }
+    .checklist li {
+      font-size: 12px;
+      color: #334155;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .checklist li::before {
+      content: "✓";
+      color: #16a34a;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 10px;
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10.5px;
+      color: #64748b;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="subtitle">Pixelotech Engineering Operations</div>
+      <h1>Shopify App 24/7 Cloud Deployment Guide</h1>
+    </div>
+    <div class="header-right">
+      <div><strong>Prepared for:</strong> Aaron (Manager)</div>
+      <div><strong>Target App:</strong> Pixelotech Size Chart &amp; Size Guide</div>
+      <div><strong>Date:</strong> November 2026</div>
+      <div><strong>Status:</strong> Ready for Production Deployment</div>
+    </div>
+  </div>
+
+  <!-- Executive Summary -->
+  <div class="section">
+    <div class="section-title">1. Purpose &amp; Problem Statement</div>
+    <div class="overview-grid">
+      <div class="overview-card" style="border-left: 4px solid #ef4444;">
+        <h3>⚠️ Current Limitation (Local Dev Mode)</h3>
+        <p>
+          The app currently runs via <code>shopify app dev</code> on local machines using temporary Cloudflare tunnels. When the developer's laptop is closed or disconnects, the Node.js server shuts down, causing the app to become inaccessible to teammates, managers, and storefront shoppers.
+        </p>
+      </div>
+      <div class="overview-card" style="border-left: 4px solid #16a34a;">
+        <h3>✅ Desired State (24/7 Cloud Hosting)</h3>
+        <p>
+          Deploy the app container to a dedicated cloud server (Render / Railway). The server operates continuously 24/7/365 with zero dependence on any personal laptop. Teammates and clients can access the embedded admin and storefront sizing charts at any time.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step-by-Step Deployment Roadmap -->
+  <div class="section">
+    <div class="section-title">2. Step-by-Step Deployment Procedure</div>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title">
+          <span class="step-number">1</span>
+          <span>Version Control &amp; GitHub Repository Setup</span>
+        </div>
+        <span class="badge badge-blue">Time: 3 Mins</span>
+      </div>
+      <div class="step-desc">
+        Stage and commit all verified changes (remix admin UI, OS 2.0 theme extensions, and listing assets) to a private GitHub repository.
+      </div>
+      <pre><code># 1. Stage and commit all verified changes
+git add .
+git commit -m "feat: complete size chart app with app store proposal"
+
+# 2. Link to private GitHub repository and push
+git remote add origin https://github.com/Pixelotech/pixelotech-size-chart.git
+git branch -M main
+git push -u origin main</code></pre>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title">
+          <span class="step-number">2</span>
+          <span>Automated Cloud Service Provisioning (Render / Railway)</span>
+        </div>
+        <span class="badge badge-blue">Time: 7 Mins</span>
+      </div>
+      <div class="step-desc">
+        Connect the GitHub repository to <strong>Render</strong> (Web Service) or <strong>Railway</strong>. Our repository already contains a production-ready <code>Dockerfile</code> that compiles and runs the app in production mode.
+      </div>
+      <p style="font-size: 12px; font-weight: 600; color: #0f172a; margin-bottom: 4px;">Configure the following Environment Variables in the hosting dashboard:</p>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 28%;">Environment Variable</th>
+            <th style="width: 44%;">Production Value</th>
+            <th style="width: 28%;">Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>SHOPIFY_API_KEY</code></td>
+            <td><code>your_shopify_api_key</code></td>
+            <td>Partner App Client ID</td>
+          </tr>
+          <tr>
+            <td><code>SHOPIFY_API_SECRET</code></td>
+            <td><code>your_shopify_api_secret</code></td>
+            <td>Partner App Client Secret</td>
+          </tr>
+          <tr>
+            <td><code>SCOPES</code></td>
+            <td><code>read_products,write_app_proxy</code></td>
+            <td>Required Shopify access permissions</td>
+          </tr>
+          <tr>
+            <td><code>HOST</code></td>
+            <td><code>https://pixelotech-size-chart.onrender.com</code></td>
+            <td>Permanent cloud service URL assigned by host</td>
+          </tr>
+          <tr>
+            <td><code>PORT</code></td>
+            <td><code>3000</code></td>
+            <td>Container listener port</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title">
+          <span class="step-number">3</span>
+          <span>Shopify Configuration &amp; Extension Release</span>
+        </div>
+        <span class="badge badge-blue">Time: 3 Mins</span>
+      </div>
+      <div class="step-desc">
+        Update <code>shopify.app.toml</code> with the permanent cloud domain and release the extension build to Shopify's edge CDN:
+      </div>
+      <pre><code># Inside shopify.app.toml:
+application_url = "https://pixelotech-size-chart.onrender.com"
+
+[app_proxy]
+url = "https://pixelotech-size-chart.onrender.com"
+subpath = "size-chart"
+prefix = "apps"
+
+# In terminal: Deploy the production configuration to Shopify
+npx shopify app deploy</code></pre>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title">
+          <span class="step-number">4</span>
+          <span>Team Verification &amp; Acceptance Checklist</span>
+        </div>
+        <span class="badge badge-green">Verification</span>
+      </div>
+      <ul class="checklist">
+        <li><strong>Independence Check:</strong> Turn off all developer laptop terminals completely.</li>
+        <li><strong>Admin Verification:</strong> Open <a href="https://admin.shopify.com/store/pot-app-test-store/apps/size-chart-126/app" style="color: #005bd3;">POT App Test Store Admin</a> — confirms the Size Chart dashboard and editor load instantly.</li>
+        <li><strong>Storefront Verification:</strong> Visit <a href="https://pot-app-test-store.myshopify.com" style="color: #005bd3;">pot-app-test-store.myshopify.com</a> (Password: <code>romeo</code>) — verify popup/inline size charts display smoothly.</li>
+        <li><strong>Continuous Deployment (CI/CD):</strong> Any future bug fix or feature pushed to <code>main</code> branch will auto-deploy without manual server steps.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Infrastructure & Cost Summary -->
+  <div class="section">
+    <div class="section-title">3. Infrastructure Cost &amp; Operations Summary</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Hosting Provider</th>
+          <th>Plan Tier</th>
+          <th>Monthly Cost</th>
+          <th>Uptime &amp; SLA</th>
+          <th>Recommendation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Render.com</strong></td>
+          <td>Web Service (Starter / Free)</td>
+          <td><strong>$0 - $7 / mo</strong></td>
+          <td>99.9% uptime, auto-SSL, HTTP/2</td>
+          <td><span class="badge badge-green">Recommended</span> (Simplest for Shopify Remix)</td>
+        </tr>
+        <tr>
+          <td><strong>Railway.app</strong></td>
+          <td>Hobby / Pro</td>
+          <td><strong>~$5 / mo</strong></td>
+          <td>Usage-based, instant builds, auto-rollback</td>
+          <td>Strong alternative for multi-container apps</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Sign-off Footer -->
+  <div class="footer">
+    <div>Pixelotech Proprietary &amp; Confidential • Prepared for Aaron (Manager)</div>
+    <div>Document Ref: PT-SHOPIFY-DEPLOY-V1.0</div>
+  </div>
+
+</body>
+</html>

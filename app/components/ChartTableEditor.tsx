@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import {
   Card,
   BlockStack,
-  InlineStack,
   Text,
-  TextField,
-  Button,
   Select,
-  Banner,
   Modal,
+  TextField,
+  Banner,
 } from "@shopify/polaris";
 import { parseSizeChartCsv, exportSizeChartCsv } from "../utils/csv";
 
@@ -95,7 +93,7 @@ export function ChartTableEditor({
   };
 
   const addColumn = () => {
-    const newColName = `Measurement ${columns.length}`;
+    const newColName = `Col ${columns.length + 1}`;
     const newCols = [...columns, newColName];
     const newRows = rows.map((r) => [...r, ""]);
     onChange({ columns: newCols, rows: newRows, baseUnit });
@@ -161,40 +159,28 @@ export function ChartTableEditor({
   return (
     <Card>
       <BlockStack gap="400">
-        <InlineStack align="space-between" blockAlign="center">
-          <Text as="h2" variant="headingMd">
-            Size Chart Table
-          </Text>
-          <InlineStack gap="200">
-            <Select
-              label=""
-              labelHidden
-              options={[
-                { label: "Choose a template...", value: "" },
-                { label: "Tops (Chest, Length, Shoulder)", value: "tops" },
-                { label: "Bottoms (Waist, Hip, Inseam)", value: "bottoms" },
-                { label: "Shoes (US, UK, EU, CM)", value: "shoes" },
-                { label: "Rings (US, Dia, Circ)", value: "rings" },
-              ]}
-              onChange={(val) => val && applyTemplate(val)}
-              value=""
-            />
-            <Button onClick={() => setCsvModalOpen(true)}>Import CSV</Button>
-            <Button onClick={handleExportCsv}>Export CSV</Button>
-          </InlineStack>
-        </InlineStack>
+        <Text as="h2" variant="headingMd">
+          Measurements
+        </Text>
 
-        <InlineStack gap="300" blockAlign="center">
-          <Text as="span" variant="bodyMd">
-            Base Unit:
-          </Text>
-          <div style={{ width: "150px" }}>
+        {/* Top Controls: Base Unit & Template Actions */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "12px",
+            paddingBottom: "4px",
+          }}
+        >
+          {/* Base Unit */}
+          <div style={{ width: "160px" }}>
             <Select
-              label=""
-              labelHidden
+              label="Base unit"
               options={[
-                { label: "Centimeters (cm)", value: "cm" },
                 { label: "Inches (in)", value: "inch" },
+                { label: "Centimeters (cm)", value: "cm" },
                 { label: "Mixed / Sizes", value: "mixed" },
               ]}
               value={baseUnit}
@@ -207,61 +193,150 @@ export function ChartTableEditor({
               }
             />
           </div>
-        </InlineStack>
 
-        <div style={{ overflowX: "auto", width: "100%" }}>
+          {/* Template, Import, Export */}
+          <div style={{ display: "flex", alignItems: "flex-end", gap: "8px", flexWrap: "wrap" }}>
+            <div style={{ width: "180px" }}>
+              <Select
+                label="Choose a template"
+                options={[
+                  { label: "Choose a template...", value: "" },
+                  { label: "Tops (Chest, Length, Shoulder)", value: "tops" },
+                  { label: "Bottoms (Waist, Hip, Inseam)", value: "bottoms" },
+                  { label: "Shoes (US, UK, EU, CM)", value: "shoes" },
+                  { label: "Rings (US, Dia, Circ)", value: "rings" },
+                ]}
+                onChange={(val) => val && applyTemplate(val)}
+                value=""
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => setCsvModalOpen(true)}
+              style={{
+                height: "36px",
+                padding: "0 14px",
+                background: "#ffffff",
+                border: "1px solid #d4d7dc",
+                borderRadius: "8px",
+                fontSize: "13px",
+                fontWeight: 500,
+                color: "#202223",
+                cursor: "pointer",
+              }}
+            >
+              Import CSV
+            </button>
+            <button
+              type="button"
+              onClick={handleExportCsv}
+              style={{
+                height: "36px",
+                padding: "0 14px",
+                background: "#ffffff",
+                border: "1px solid #d4d7dc",
+                borderRadius: "8px",
+                fontSize: "13px",
+                fontWeight: 500,
+                color: "#202223",
+                cursor: "pointer",
+              }}
+            >
+              Export CSV
+            </button>
+          </div>
+        </div>
+
+        {/* Measurement Grid */}
+        <div style={{ overflowX: "auto", width: "100%", borderRadius: "8px" }}>
           <table
             style={{
               width: "100%",
-              borderCollapse: "collapse",
-              minWidth: `${Math.max(columns.length * 140, 500)}px`,
+              borderCollapse: "separate",
+              borderSpacing: "0 6px",
+              minWidth: `${Math.max(columns.length * 130 + 120, 520)}px`,
             }}
           >
             <thead>
-              <tr style={{ background: "#f6f6f7" }}>
+              <tr>
                 {columns.map((col, ci) => (
                   <th
                     key={ci}
                     style={{
-                      padding: "8px",
-                      border: "1px solid #dfe3e8",
+                      padding: "0 4px",
                       textAlign: "left",
-                      minWidth: "130px",
+                      minWidth: "120px",
                     }}
                   >
-                    <InlineStack gap="100" blockAlign="center">
-                      <div style={{ flex: 1 }}>
-                        <TextField
-                          label=""
-                          labelHidden
-                          value={col}
-                          onChange={(val) => handleColumnNameChange(ci, val)}
-                          autoComplete="off"
-                        />
-                      </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        background: "#f8fafc",
+                        border: "1px solid #e2e8f0",
+                        borderRadius: "6px",
+                        padding: "2px 8px",
+                        height: "36px",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      <input
+                        type="text"
+                        value={col}
+                        onChange={(e) => handleColumnNameChange(ci, e.target.value)}
+                        style={{
+                          border: "none",
+                          background: "transparent",
+                          outline: "none",
+                          width: "100%",
+                          fontSize: "13px",
+                          fontWeight: 600,
+                          color: "#1e293b",
+                        }}
+                      />
                       {columns.length > 1 && (
-                        <Button
-                          variant="plain"
-                          tone="critical"
+                        <button
+                          type="button"
                           onClick={() => removeColumn(ci)}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            color: "#94a3b8",
+                            cursor: "pointer",
+                            padding: "0 2px",
+                            fontSize: "12px",
+                            display: "flex",
+                          }}
+                          title="Remove column"
                         >
                           ✕
-                        </Button>
+                        </button>
                       )}
-                    </InlineStack>
+                    </div>
                   </th>
                 ))}
-                <th
-                  style={{
-                    padding: "8px",
-                    border: "1px solid #dfe3e8",
-                    width: "80px",
-                    textAlign: "center",
-                  }}
-                >
-                  <Button size="micro" onClick={addColumn}>
-                    + Col
-                  </Button>
+                <th style={{ width: "120px", padding: "0 4px", textAlign: "center" }}>
+                  <button
+                    type="button"
+                    onClick={addColumn}
+                    style={{
+                      width: "100%",
+                      height: "36px",
+                      background: "#ffffff",
+                      border: "1px dashed #cbd5e1",
+                      borderRadius: "6px",
+                      fontSize: "12.5px",
+                      fontWeight: 600,
+                      color: "#334155",
+                      cursor: "pointer",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    + Add column
+                  </button>
                 </th>
               </tr>
             </thead>
@@ -269,38 +344,42 @@ export function ChartTableEditor({
               {rows.map((row, ri) => (
                 <tr key={ri}>
                   {row.map((cell, ci) => (
-                    <td
-                      key={ci}
-                      style={{
-                        padding: "6px",
-                        border: "1px solid #dfe3e8",
-                      }}
-                    >
-                      <TextField
-                        label=""
-                        labelHidden
+                    <td key={ci} style={{ padding: "0 4px" }}>
+                      <input
+                        type="text"
                         value={cell}
-                        onChange={(val) => handleCellChange(ri, ci, val)}
-                        autoComplete="off"
+                        onChange={(e) => handleCellChange(ri, ci, e.target.value)}
+                        style={{
+                          width: "100%",
+                          height: "36px",
+                          border: "1px solid #e2e8f0",
+                          borderRadius: "6px",
+                          padding: "0 10px",
+                          fontSize: "13px",
+                          color: "#0f172a",
+                          background: "#ffffff",
+                          outline: "none",
+                          boxSizing: "border-box",
+                        }}
                       />
                     </td>
                   ))}
-                  <td
-                    style={{
-                      padding: "6px",
-                      border: "1px solid #dfe3e8",
-                      textAlign: "center",
-                    }}
-                  >
-                    {rows.length > 1 && (
-                      <Button
-                        variant="plain"
-                        tone="critical"
-                        onClick={() => removeRow(ri)}
-                      >
-                        Delete
-                      </Button>
-                    )}
+                  <td style={{ padding: "0 8px", textAlign: "center" }}>
+                    <button
+                      type="button"
+                      onClick={() => removeRow(ri)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        color: "#ef4444",
+                        fontSize: "12.5px",
+                        fontWeight: 500,
+                        cursor: "pointer",
+                        padding: "4px 8px",
+                      }}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -308,46 +387,65 @@ export function ChartTableEditor({
           </table>
         </div>
 
-        <InlineStack>
-          <Button onClick={addRow}>+ Add Row</Button>
-        </InlineStack>
-
-        {csvModalOpen && (
-          <Modal
-            open={csvModalOpen}
-            onClose={() => setCsvModalOpen(false)}
-            title="Import Size Chart from CSV"
-            primaryAction={{
-              content: "Import Data",
-              onAction: handleCsvImport,
+        {/* Add Row Button */}
+        <div>
+          <button
+            type="button"
+            onClick={addRow}
+            style={{
+              height: "34px",
+              padding: "0 14px",
+              background: "#ffffff",
+              border: "1px solid #d4d7dc",
+              borderRadius: "6px",
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "#202223",
+              cursor: "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
             }}
-            secondaryActions={[
-              {
-                content: "Cancel",
-                onAction: () => setCsvModalOpen(false),
-              },
-            ]}
           >
-            <Modal.Section>
-              <BlockStack gap="400">
-                {csvError && <Banner tone="critical">{csvError}</Banner>}
-                <Text as="p" variant="bodyMd">
-                  Paste standard CSV text below. The first row should contain the column names
-                  (e.g., Size, Chest, Waist, Hip).
-                </Text>
-                <TextField
-                  label="CSV Content"
-                  multiline={8}
-                  value={csvInput}
-                  onChange={setCsvInput}
-                  placeholder={`Size,Chest,Waist,Hip\nS,36-38,30-32,35-37\nM,39-41,33-35,38-40\nL,42-44,36-38,41-43`}
-                  autoComplete="off"
-                />
-              </BlockStack>
-            </Modal.Section>
-          </Modal>
-        )}
+            + Add row
+          </button>
+        </div>
       </BlockStack>
+
+      {/* CSV Import Modal */}
+      <Modal
+        open={csvModalOpen}
+        onClose={() => setCsvModalOpen(false)}
+        title="Import Size Chart from CSV"
+        primaryAction={{
+          content: "Import Data",
+          onAction: handleCsvImport,
+        }}
+        secondaryActions={[
+          {
+            content: "Cancel",
+            onAction: () => setCsvModalOpen(false),
+          },
+        ]}
+      >
+        <Modal.Section>
+          <BlockStack gap="400">
+            {csvError && <Banner tone="critical">{csvError}</Banner>}
+            <Text as="p" variant="bodyMd">
+              Paste your comma-separated (CSV) size chart table below. The first row will be used as the column headers.
+            </Text>
+            <TextField
+              label="CSV Content"
+              labelHidden
+              multiline={8}
+              value={csvInput}
+              onChange={setCsvInput}
+              placeholder={"Size,Chest (in),Waist (in)\nS,36,30\nM,40,34\nL,44,38"}
+              autoComplete="off"
+            />
+          </BlockStack>
+        </Modal.Section>
+      </Modal>
     </Card>
   );
 }

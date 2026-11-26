@@ -14,6 +14,13 @@
   data-collections="{% for c in product.collections %}{{ c.id }}{% unless forloop.last %},{% endunless %}{% endfor %}"
   data-override-button="{{ block.settings.button_text | escape }}"
   data-override-display="{{ block.settings.display_mode_override }}"
+  data-position="{{ block.settings.position }}"
+  data-alignment="{{ block.settings.alignment }}"
+  data-custom-selector="{{ block.settings.custom_selector | escape }}"
+  data-custom-endpoint="{{ block.settings.custom_endpoint | escape }}"
+  data-floating-position="{{ block.settings.floating_position }}"
+  data-floating-offset-y="{{ block.settings.floating_offset_y }}"
+  data-floating-offset-x="{{ block.settings.floating_offset_x }}"
 >
   {% if request.design_mode and product == nil %}
     <div style="padding: 12px 16px; border: 1px dashed #9ca3af; border-radius: 8px; text-align: center; font-size: 13px; color: #4b5563; background: #f9fafb; margin: 8px 0;">
@@ -42,11 +49,99 @@
       "options": [
         { "value": "default", "label": "Use App Settings" },
         { "value": "popup", "label": "Popup Modal" },
+        { "value": "floating", "label": "Floating Button" },
         { "value": "inline", "label": "Inline" },
-        { "value": "accordion", "label": "Accordion" },
-        { "value": "floating", "label": "Floating Button" }
+        { "value": "accordion", "label": "Accordion" }
       ],
       "default": "default"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Button Position",
+      "options": [
+        { "value": "block", "label": "Where this block is placed" },
+        { "value": "above_cart", "label": "Auto-inject: Above Add to Cart Button" },
+        { "value": "below_cart", "label": "Auto-inject: Below Add to Cart Button" },
+        { "value": "custom", "label": "Custom CSS Selector" }
+      ],
+      "default": "block",
+      "visible_if": "{{ block.settings.display_mode_override == 'default' or block.settings.display_mode_override == 'popup' }}"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Block Button Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left",
+      "info": "Applies when Button Position is set to 'Where this block is placed'.",
+      "visible_if": "{{ block.settings.position == 'block' }}"
+    },
+    {
+      "type": "text",
+      "id": "custom_selector",
+      "label": "Custom CSS Selector (Optional)",
+      "info": "Used only when Button Position is set to Custom CSS Selector (e.g. .btn-action).",
+      "visible_if": "{{ block.settings.position == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "Floating Button Settings",
+      "visible_if": "{{ block.settings.display_mode_override == 'floating' }}"
+    },
+    {
+      "type": "select",
+      "id": "floating_position",
+      "label": "Floating Button Placement",
+      "options": [
+        { "value": "bottom_right", "label": "Bottom Right" },
+        { "value": "bottom_left", "label": "Bottom Left" },
+        { "value": "middle_right", "label": "Middle Right" },
+        { "value": "middle_left", "label": "Middle Left" },
+        { "value": "top_right", "label": "Top Right" },
+        { "value": "top_left", "label": "Top Left" }
+      ],
+      "default": "bottom_right",
+      "info": "Applies when Display Mode is set to Floating Button.",
+      "visible_if": "{{ block.settings.display_mode_override == 'floating' }}"
+    },
+    {
+      "type": "range",
+      "id": "floating_offset_y",
+      "label": "Vertical Offset (Up/Down)",
+      "min": 0,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "default": 25,
+      "info": "Distance from the top or bottom of the screen.",
+      "visible_if": "{{ block.settings.display_mode_override == 'floating' }}"
+    },
+    {
+      "type": "range",
+      "id": "floating_offset_x",
+      "label": "Horizontal Offset (Left/Right)",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 25,
+      "info": "Distance from the left or right edge of the screen.",
+      "visible_if": "{{ block.settings.display_mode_override == 'floating' }}"
+    },
+    {
+      "type": "header",
+      "content": "Advanced"
+    },
+    {
+      "type": "text",
+      "id": "custom_endpoint",
+      "label": "Custom API Endpoint (Optional)",
+      "info": "Leave blank to use default Shopify App Proxy (/apps/size-chart)."
     }
   ]
 }

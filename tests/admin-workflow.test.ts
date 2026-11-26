@@ -3,7 +3,6 @@ import prisma from "../app/db.server";
 import { getOrCreateShop, upsertShopSettings, getShopSettings } from "../app/models/shop.server";
 import {
   createSizeChart,
-  getSizeChart,
   updateSizeChart,
   listSizeCharts,
 } from "../app/models/chart.server";

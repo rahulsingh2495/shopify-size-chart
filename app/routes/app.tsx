@@ -10,7 +10,14 @@ import { authenticateAdmin } from "../utils/auth.server";
 export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await authenticateAdmin(request);
+  console.log(">>> APP.TSX LOADER:", request.method, request.url);
+  try {
+    await authenticateAdmin(request);
+    console.log(">>> APP.TSX LOADER: AUTH SUCCESS");
+  } catch (err: any) {
+    console.log(">>> APP.TSX LOADER THREW:", err?.constructor?.name, err?.status, err?.statusText, err?.headers ? Object.fromEntries(err.headers.entries()) : null);
+    throw err;
+  }
 
   return { apiKey: process.env.SHOPIFY_API_KEY || "" };
 };

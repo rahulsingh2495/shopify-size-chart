@@ -1,7 +1,7 @@
 import { useState } from "react";
-import type { ActionFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useActionData, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
+import { useActionData, useLocation, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
 import {
   Page,
   Layout,
@@ -9,8 +9,8 @@ import {
   BlockStack,
   TextField,
   Select,
-  Button,
   Banner,
+  Text,
 } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
 import { authenticateAdmin } from "../utils/auth.server";
@@ -20,7 +20,13 @@ import { setAssignments } from "../models/assignment.server";
 import { ChartTableEditor } from "../components/ChartTableEditor";
 import { DisplayModePicker } from "../components/DisplayModePicker";
 import { AssignmentEditor } from "../components/AssignmentEditor";
+import { LivePreviewModal } from "../components/LivePreviewModal";
 import type { BaseUnit, DisplayMode, FitNote, Status, SetAssignmentInput } from "../types/chart";
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  await authenticateAdmin(request);
+  return null;
+};
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const { session, redirect } = await authenticateAdmin(request);
@@ -40,11 +46,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return json({ error: "Please enter a chart name." }, { status: 400 });
   }
 
-  let columns = ["Size", "Chest (in)", "Waist (in)"];
+  let columns = ["Size", "Waist (in)", "Hip (in)", "Inseam (in)"];
   let rows = [
-    ["S", "34-36", "28-30"],
-    ["M", "38-40", "32-34"],
-    ["L", "42-44", "36-38"],
+    ["28", "28 - 29", "35 - 36", "30"],
+    ["30", "30 - 31", "37 - 38", "30"],
+    ["32", "32 - 33", "39 - 40", "32"],
+    ["34", "34 - 35", "41 - 42", "32"],
+    ["36", "36 - 37", "43 - 44", "32"],
   ];
   let baseUnit: BaseUnit = "inch";
 
@@ -55,7 +63,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       if (parsed.rows) rows = parsed.rows;
       if (parsed.baseUnit) baseUnit = parsed.baseUnit;
     } catch {
-      // fallback to defaults
+      // fallback
     }
   }
 
@@ -87,20 +95,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function NewChart() {
-  const navigate = useNavigate();
+  const location = useLocation();
   const submit = useSubmit();
   const navigation = useNavigation();
   const actionData = useActionData<typeof action>();
 
   const isSubmitting = navigation.state === "submitting";
 
-  const [name, setName] = useState("Men's Classic Tops");
+  const [name, setName] = useState("Women's bottoms");
   const [status, setStatus] = useState<Status>("active");
   const [fitNote, setFitNote] = useState<FitNote>("true_to_size");
   const [displayMode, setDisplayMode] = useState<DisplayMode>("popup");
   const [buttonText, setButtonText] = useState("Size Guide");
   const [measurementInstructions, setMeasurementInstructions] = useState(
-    "Chest: Measure around the fullest part of your chest under your arms.\nWaist: Measure around your natural waistline.",
+    "Waist: Measure around your natural waistline.\nHip: Measure around the fullest part of your hips.\nInseam: Measure from the crotch to the ankle.",
   );
 
   const [tableData, setTableData] = useState<{
@@ -108,23 +116,26 @@ export default function NewChart() {
     rows: string[][];
     baseUnit: BaseUnit;
   }>({
-    columns: ["Size", "Chest (in)", "Waist (in)", "Length (in)"],
+    columns: ["Size", "Waist (in)", "Hip (in)", "Inseam (in)"],
     rows: [
-      ["S", "36 - 38", "30 - 32", "28"],
-      ["M", "40 - 42", "33 - 35", "29"],
-      ["L", "44 - 46", "36 - 38", "30"],
-      ["XL", "48 - 50", "39 - 41", "31"],
+      ["28", "28 - 29", "35 - 36", "30"],
+      ["30", "30 - 31", "37 - 38", "30"],
+      ["32", "32 - 33", "39 - 40", "32"],
+      ["34", "34 - 35", "41 - 42", "32"],
+      ["36", "36 - 37", "43 - 44", "32"],
     ],
     baseUnit: "inch",
   });
 
   const [assignments, setAssignmentsState] = useState<SetAssignmentInput[]>([
     {
-      targetType: "all_products",
+      targetType: "collection",
       targetValue: "*",
       priority: 0,
     },
   ]);
+
+  const [showPreview, setShowPreview] = useState(false);
 
   const handleSubmit = () => {
     submit(
@@ -144,37 +155,50 @@ export default function NewChart() {
 
   return (
     <Page
-      title="Create New Size Chart"
+      title="Create new size chart"
       backAction={{
-        content: "Size Charts",
-        onAction: () => navigate("/app/charts"),
+        content: "Size charts",
+        url: `/app/charts${location.search}`,
       }}
       primaryAction={{
-        content: "Save Chart",
+        content: "Save chart",
         loading: isSubmitting,
         onAction: handleSubmit,
       }}
+      secondaryActions={[
+        {
+          content: "👁️ Live preview",
+          onAction: () => setShowPreview(true),
+        },
+      ]}
     >
       <TitleBar title="Create New Size Chart">
+        <button onClick={() => setShowPreview(true)}>Live preview</button>
         <button variant="primary" onClick={handleSubmit}>
-          Save Chart
+          Save chart
         </button>
       </TitleBar>
+
       <BlockStack gap="500">
         {actionData?.error && (
           <Banner tone="critical">{actionData.error}</Banner>
         )}
 
         <Layout>
+          {/* Left Column (2/3) */}
           <Layout.Section>
             <BlockStack gap="400">
+              {/* Card 1: Chart details */}
               <Card>
                 <BlockStack gap="400">
+                  <Text as="h2" variant="headingMd">
+                    Chart details
+                  </Text>
                   <TextField
-                    label="Size Chart Name"
+                    label="Size chart name"
                     value={name}
                     onChange={setName}
-                    placeholder="e.g. T-Shirts & Polos"
+                    placeholder="e.g. Women's bottoms"
                     helpText="Internal name for organizing your size charts"
                     autoComplete="off"
                   />
@@ -182,7 +206,7 @@ export default function NewChart() {
                   <Select
                     label="Status"
                     options={[
-                      { label: "Active (Visible on storefront matching products)", value: "active" },
+                      { label: "Active (Visible on matching storefront products)", value: "active" },
                       { label: "Draft (Hidden from storefront)", value: "draft" },
                     ]}
                     value={status}
@@ -191,6 +215,7 @@ export default function NewChart() {
                 </BlockStack>
               </Card>
 
+              {/* Card 2: Measurements */}
               <ChartTableEditor
                 columns={tableData.columns}
                 rows={tableData.rows}
@@ -198,6 +223,7 @@ export default function NewChart() {
                 onChange={setTableData}
               />
 
+              {/* Card 3: Product targeting */}
               <AssignmentEditor
                 assignments={assignments}
                 onChange={setAssignmentsState}
@@ -205,6 +231,7 @@ export default function NewChart() {
             </BlockStack>
           </Layout.Section>
 
+          {/* Right Column (1/3) */}
           <Layout.Section variant="oneThird">
             <BlockStack gap="400">
               <DisplayModePicker
@@ -217,21 +244,23 @@ export default function NewChart() {
                 onFitNoteChange={setFitNote}
                 onMeasurementInstructionsChange={setMeasurementInstructions}
               />
-
-              <Card>
-                <BlockStack gap="300">
-                  <Button variant="primary" size="large" fullWidth onClick={handleSubmit} loading={isSubmitting}>
-                    Save Size Chart
-                  </Button>
-                  <Button fullWidth url="/app/charts">
-                    Cancel
-                  </Button>
-                </BlockStack>
-              </Card>
             </BlockStack>
           </Layout.Section>
         </Layout>
       </BlockStack>
+
+      {/* Live Preview Modal */}
+      <LivePreviewModal
+        open={showPreview}
+        onClose={() => setShowPreview(false)}
+        chartName={name}
+        buttonText={buttonText}
+        fitNote={fitNote}
+        measurementInstructions={measurementInstructions}
+        columns={tableData.columns}
+        rows={tableData.rows}
+        baseUnit={tableData.baseUnit}
+      />
     </Page>
   );
 }
